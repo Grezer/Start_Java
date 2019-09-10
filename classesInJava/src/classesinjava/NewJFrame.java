@@ -243,11 +243,23 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
+        Graphics g = this.jPanel1.getGraphics(); 
+        int x = Integer.parseInt(jTextField1.getText());
+        int y = Integer.parseInt(jTextField2.getText());        
+        int Width = Integer.parseInt(jTextField4.getText());
+        int Height = Integer.parseInt(jTextField3.getText());
+        Rhombus rec = new Rhombus(x, y, Width, Height);
+        rec.draw(g);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
+        Graphics g = this.jPanel1.getGraphics(); 
+        int x = Integer.parseInt(jTextField1.getText());
+        int y = Integer.parseInt(jTextField2.getText());        
+        int Width = Integer.parseInt(jTextField4.getText());
+        int Height = Integer.parseInt(jTextField3.getText());
+        Parallelogram rec = new Parallelogram(x, y, Width, Height);
+        rec.draw(g);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed

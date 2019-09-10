@@ -24,8 +24,8 @@ public class Triangle extends Figure
     this.height = height;
 }
     public void draw(Graphics g) {
-        int[] arrX = {0, width, (width/2), 0};
-        int[] arrY = {height, height, 0, height};
+        int[] arrX = {x, width + x, (width/2) + x, x};
+        int[] arrY = {height + y, height + y, y, height + y};
         g.setColor(Color.BLACK);
         g.drawPolyline(arrX, arrY, 4);        
     }

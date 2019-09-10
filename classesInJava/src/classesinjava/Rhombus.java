@@ -23,6 +23,9 @@ public class Rhombus  extends Figure
     this.height = height;
 }
     public void draw(Graphics g) {
-        g.drawRect(x, y, width, height);
+        int[] arrX = {(int)(x + width * 0.5), (x + width), (int)(x + width * 0.5), x, (int)(x + width * 0.5)};
+        int[] arrY = {y, (int)(y + height * 0.5), (y + height), (int)(y + height * 0.5), y};
+        g.setColor(Color.BLACK);
+        g.drawPolyline(arrX, arrY, 5);     
     }    
 }

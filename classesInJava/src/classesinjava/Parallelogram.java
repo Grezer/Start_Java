@@ -24,6 +24,9 @@ public class Parallelogram extends Figure
     this.height = height;
 }
     public void draw(Graphics g) {
-        g.drawRect(x, y, width, height);
+        int[] arrX = {x, (int)(x + width* 0.8), (x + width), (int)(x + width* 0.2), x};
+        int[] arrY = {y, y, (y + height), (y + height), y};
+        g.setColor(Color.BLACK);
+        g.drawPolyline(arrX, arrY, 5);     
     }
 }
