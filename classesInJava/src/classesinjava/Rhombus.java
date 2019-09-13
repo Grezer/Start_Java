@@ -10,22 +10,29 @@ import java.awt.*;
  * @author Grezer
  */
 
-
 public class Rhombus  extends Figure
 {
     private int width;
     private int height;
 
-// конструктор с обращением к конструктору класса Figure
     Rhombus(int x, int y, int width, int height){
-    super(x,y);
-    this.width = width;
-    this.height = height;
-}
+        super(x,y);
+        this.width = width;
+        this.height = height;
+    }
+    
     public void draw(Graphics g) {
         int[] arrX = {(int)(x + width * 0.5), (x + width), (int)(x + width * 0.5), x, (int)(x + width * 0.5)};
         int[] arrY = {y, (int)(y + height * 0.5), (y + height), (int)(y + height * 0.5), y};
         g.setColor(Color.BLACK);
         g.drawPolyline(arrX, arrY, 5);     
+    }
+
+    public double getPerimeter(){         
+        return Math.sqrt(Math.pow(width / 2, 2.0) + Math.pow(height / 2, 2.0)) * 4;
+    }
+     
+    public double getArea(){         
+        return width * height / 2;
     }    
 }

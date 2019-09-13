@@ -11,11 +11,14 @@ import java.awt.*;
 */
 // абстрактный класс фигуры
 abstract class Figure{
-int x;
-int y;
-Figure(int x, int y){
-this.x=x;
-this.y=y;
-}
-public abstract void draw(Graphics g);
+    int x;
+    int y;
+    Figure(int x, int y){
+        this.x=x;
+        this.y=y;
+    }
+
+    public abstract double getPerimeter();    
+    public abstract double getArea();    
+    public abstract void draw(Graphics g);
 }

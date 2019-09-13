@@ -11,22 +11,30 @@ import java.awt.*;
  * @author Grezer
  */
 
-
 public class Parallelogram extends Figure
 {
     private int width;
     private int height;
 
-// конструктор с обращением к конструктору класса Figure
     Parallelogram(int x, int y, int width, int height){
-    super(x,y);
-    this.width = width;
-    this.height = height;
-}
+        super(x,y);
+        this.width = width;
+        this.height = height;
+    }
     public void draw(Graphics g) {
         int[] arrX = {x, (int)(x + width* 0.8), (x + width), (int)(x + width* 0.2), x};
         int[] arrY = {y, y, (y + height), (y + height), y};
         g.setColor(Color.BLACK);
         g.drawPolyline(arrX, arrY, 5);     
+    }
+    
+    public double getPerimeter(){   
+        double a = Math.sqrt(Math.pow((0.2 * width), 2.0) + Math.pow(height, 2.0));
+        double P = 2 * a + 1.6 * height;
+        return P;
+    }
+     
+    public double getArea(){         
+        return (0.6 * width * height) + (0.2 * width * height);
     }
 }

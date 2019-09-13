@@ -11,22 +11,29 @@ import java.awt.*;
 * @author Grezer
 */
 
-
 public class Triangle extends Figure
 {
     private int width;
     private int height;
 
-// конструктор с обращением к конструктору класса Figure
     Triangle(int x, int y, int width, int height){
-    super(x,y);
-    this.width = width;
-    this.height = height;
-}
+        super(x,y);
+        this.width = width;
+        this.height = height;
+    }
+    
     public void draw(Graphics g) {
         int[] arrX = {x, width + x, (width/2) + x, x};
         int[] arrY = {height + y, height + y, y, height + y};
         g.setColor(Color.BLACK);
         g.drawPolyline(arrX, arrY, 4);        
+    }
+    
+    public double getPerimeter(){         
+        return Math.sqrt(Math.pow(height, 2.0) + Math.pow(width / 2, 2.0)) * 2 + width ;
+    }
+     
+    public double getArea(){         
+        return width / 2 + height;
     }
 }

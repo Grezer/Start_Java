@@ -11,19 +11,26 @@ import java.awt.*;
 * @author Grezer
 */
 
-
 public class Circle extends Figure
 {
     private int width;
     private int height;
 
-// конструктор с обращением к конструктору класса Figure
     Circle(int x, int y, int width, int height){
-    super(x,y);
-    this.width = width;
-    this.height = height;
-}
+        super(x,y);
+        this.width = width;
+        this.height = height;
+    }
+    
     public void draw(Graphics g) {
         g.drawOval(x, y, width, height);
+    }
+    
+    public double getPerimeter(){  
+        return 2 * Math.PI * Math.sqrt((width ^ 2 + height ^ 2)/8);
+    }
+     
+    public double getArea(){         
+        return Math.PI * (width / 2 + height / 2);
     }
 }
