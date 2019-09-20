@@ -9,6 +9,7 @@ package classesinjava;
  *
  * @author pc
  */
+
 public class myStruct {
     public int x;
     public int y; 
@@ -16,4 +17,13 @@ public class myStruct {
     public int width;
     public String type;
     public String name;
+    
+    myStruct(int x, int y, int height, int width, String type, String name){
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.type = type;
+        this.name = name;
+    }
 }
