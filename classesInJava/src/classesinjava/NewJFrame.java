@@ -16,12 +16,18 @@ public class NewJFrame extends javax.swing.JFrame {
     
     Point start;
     ArrayList<myStruct> listOfFigures = new ArrayList<myStruct>();
+    
        
     /**
      * Creates new form NewJFrame
      */
     public NewJFrame() {
         initComponents();
+        jRadioButton1.setActionCommand("Circle");
+        jRadioButton2.setActionCommand("Rectangle");
+        jRadioButton3.setActionCommand("Rhombus");
+        jRadioButton4.setActionCommand("Parollelogram");
+        jRadioButton5.setActionCommand("Trianle");
     }
 
     /**
@@ -45,7 +51,6 @@ public class NewJFrame extends javax.swing.JFrame {
         jRadioButton5 = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
-        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -107,8 +112,6 @@ public class NewJFrame extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(jTree1);
 
-        jTextField1.setText("jTextField1");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,11 +120,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
                         .addContainerGap())
@@ -164,10 +163,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -196,14 +192,44 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jPanel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseReleased
         // TODO add your handling code here:
-        // Отпустили
-        jRadioButton1.setActionCommand("asd");
-        jRadioButton2.setActionCommand("ggg");
-        String a  = buttonGroup1.getSelection().getActionCommand();
-        int asd = 2;
-        //jTextField1.setText(a);
+        // Отпустили       
+        String nowFigure  = buttonGroup1.getSelection().getActionCommand();
+        Graphics g = this.jPanel1.getGraphics(); 
         
-        Graphics g = this.jPanel1.getGraphics();                 
+        switch(nowFigure) {
+            case "Circle":
+                Circle cir = new Circle((int)Math.min(start.getX(), evt.getX()), 
+                                (int)Math.min(start.getY(), evt.getY()),
+                                (int)Math.abs(start.getX() - evt.getX()), 
+                                (int)Math.abs(start.getY() - evt.getY()));
+                cir.draw(g);
+                jLabel5.setText("Perimetr: " + cir.getPerimeter());
+                jLabel6.setText("Area: " + cir.getArea());
+                myStruct newFigure = new myStruct((int)Math.min(start.getX(), evt.getX()),
+                                          (int)Math.min(start.getY(), evt.getY()),
+                                          (int)Math.abs(start.getX() - evt.getX()),
+                                          (int)Math.abs(start.getY() - evt.getY()),
+                                           nowFigure, "asd");
+            break;            
+            case "Rectangle":
+                
+            break;
+            case "Rhombus":
+                
+            break;
+            case "Parollelogram":
+                
+            break;
+            case "Trianle":
+                
+            break;
+          default:           
+        }
+        
+        // how counted elements in list?
+        
+        
+                     
         Circle cir = new Circle((int)Math.min(start.getX(), evt.getX()), 
                                 (int)Math.min(start.getY(), evt.getY()),
                                 (int)Math.abs(start.getX() - evt.getX()), 
@@ -275,7 +301,6 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JRadioButton jRadioButton5;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTree jTree1;
     // End of variables declaration//GEN-END:variables
 }
