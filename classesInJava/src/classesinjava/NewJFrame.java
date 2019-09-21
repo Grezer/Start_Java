@@ -7,6 +7,7 @@ package classesinjava;
 import java.awt.Color;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.*;
 import javax.swing.*;
 /**
  *
@@ -192,10 +193,19 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jPanel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseReleased
         // TODO add your handling code here:
-        // Отпустили       
-        String nowFigure  = buttonGroup1.getSelection().getActionCommand();
+        // Отпустили
         Graphics g = this.jPanel1.getGraphics(); 
-        
+        String nowFigure  = buttonGroup1.getSelection().getActionCommand();
+        int countOfFigures = 0;
+        for (int i = 0; i < listOfFigures.size(); i++) 
+            if (listOfFigures.get(i).type == nowFigure)
+                countOfFigures++;            
+        myStruct newFigure = new myStruct((int)Math.min(start.getX(), evt.getX()),
+                                          (int)Math.min(start.getY(), evt.getY()),
+                                          (int)Math.abs(start.getX() - evt.getX()),
+                                          (int)Math.abs(start.getY() - evt.getY()),
+                                           nowFigure, nowFigure + " " + String.valueOf(countOfFigures));
+        listOfFigures.add(newFigure);       
         switch(nowFigure) {
             case "Circle":
                 Circle cir = new Circle((int)Math.min(start.getX(), evt.getX()), 
@@ -204,46 +214,46 @@ public class NewJFrame extends javax.swing.JFrame {
                                 (int)Math.abs(start.getY() - evt.getY()));
                 cir.draw(g);
                 jLabel5.setText("Perimetr: " + cir.getPerimeter());
-                jLabel6.setText("Area: " + cir.getArea());
-                myStruct newFigure = new myStruct((int)Math.min(start.getX(), evt.getX()),
-                                          (int)Math.min(start.getY(), evt.getY()),
-                                          (int)Math.abs(start.getX() - evt.getX()),
-                                          (int)Math.abs(start.getY() - evt.getY()),
-                                           nowFigure, "asd");
+                jLabel6.setText("Area: " + cir.getArea());                
             break;            
             case "Rectangle":
-                
-            break;
-            case "Rhombus":
-                
-            break;
-            case "Parollelogram":
-                
-            break;
-            case "Trianle":
-                
-            break;
-          default:           
-        }
-        
-        // how counted elements in list?
-        
-        
-                     
-        Circle cir = new Circle((int)Math.min(start.getX(), evt.getX()), 
+                Rectangle rec = new Rectangle((int)Math.min(start.getX(), evt.getX()), 
                                 (int)Math.min(start.getY(), evt.getY()),
                                 (int)Math.abs(start.getX() - evt.getX()), 
                                 (int)Math.abs(start.getY() - evt.getY()));
-        cir.draw(g);
-        jLabel5.setText("Perimetr: " + cir.getPerimeter());
-        jLabel6.setText("Area: " + cir.getArea());
-        myStruct newFigure = new myStruct((int)Math.min(start.getX(), evt.getX()),
-                                          (int)Math.min(start.getY(), evt.getY()),
-                                          (int)Math.abs(start.getX() - evt.getX()),
-                                          (int)Math.abs(start.getY() - evt.getY()),
-                                           "asd", "asd");
-        listOfFigures.add(newFigure);
-        
+                rec.draw(g);
+                jLabel5.setText("Perimetr: " + rec.getPerimeter());
+                jLabel6.setText("Area: " + rec.getArea());                
+            break;
+            case "Rhombus":
+                Rhombus rmb = new Rhombus((int)Math.min(start.getX(), evt.getX()), 
+                                (int)Math.min(start.getY(), evt.getY()),
+                                (int)Math.abs(start.getX() - evt.getX()), 
+                                (int)Math.abs(start.getY() - evt.getY()));
+                rmb.draw(g);
+                jLabel5.setText("Perimetr: " + rmb.getPerimeter());
+                jLabel6.setText("Area: " + rmb.getArea());                 
+            break;
+            case "Parallelogram":
+                Parallelogram par = new Parallelogram((int)Math.min(start.getX(), evt.getX()), 
+                                (int)Math.min(start.getY(), evt.getY()),
+                                (int)Math.abs(start.getX() - evt.getX()), 
+                                (int)Math.abs(start.getY() - evt.getY()));
+                par.draw(g);
+                jLabel5.setText("Perimetr: " + par.getPerimeter());
+                jLabel6.setText("Area: " + par.getArea());                 
+            break;
+            case "Triangle":
+                Triangle tri = new Triangle((int)Math.min(start.getX(), evt.getX()), 
+                                (int)Math.min(start.getY(), evt.getY()),
+                                (int)Math.abs(start.getX() - evt.getX()), 
+                                (int)Math.abs(start.getY() - evt.getY()));
+                tri.draw(g);
+                jLabel5.setText("Perimetr: " + tri.getPerimeter());
+                jLabel6.setText("Area: " + tri.getArea());                
+            break;
+          default:           
+        }  
     }//GEN-LAST:event_jPanel1MouseReleased
 
     private void jPanel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseDragged
@@ -254,6 +264,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 }
     }//GEN-LAST:event_jPanel1MouseDragged
 
+    
     /**
      * @param args the command line arguments
      */
