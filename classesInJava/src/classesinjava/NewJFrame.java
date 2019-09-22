@@ -9,6 +9,13 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.*;
 import javax.swing.*;
+import java.io.*;
+import java.nio.file.spi.FileTypeDetector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.simple.*;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 /**
  *
  * @author Grezer
@@ -16,7 +23,7 @@ import javax.swing.*;
 public class NewJFrame extends javax.swing.JFrame {
     
     Point start;
-    ArrayList<myStruct> listOfFigures = new ArrayList<myStruct>();
+    ArrayList<Figure> listOfFigures = new ArrayList<Figure>();
     
        
     /**
@@ -27,8 +34,8 @@ public class NewJFrame extends javax.swing.JFrame {
         jRadioButton1.setActionCommand("Circle");
         jRadioButton2.setActionCommand("Rectangle");
         jRadioButton3.setActionCommand("Rhombus");
-        jRadioButton4.setActionCommand("Parollelogram");
-        jRadioButton5.setActionCommand("Trianle");
+        jRadioButton4.setActionCommand("Parallelogram");
+        jRadioButton5.setActionCommand("Triangle");
     }
 
     /**
@@ -50,12 +57,15 @@ public class NewJFrame extends javax.swing.JFrame {
         jRadioButton3 = new javax.swing.JRadioButton();
         jRadioButton4 = new javax.swing.JRadioButton();
         jRadioButton5 = new javax.swing.JRadioButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
+        jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jPanel1MouseMoved(evt);
+            }
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 jPanel1MouseDragged(evt);
             }
@@ -73,11 +83,11 @@ public class NewJFrame extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 762, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 486, Short.MAX_VALUE)
         );
 
         jButton2.setText("Сlear");
@@ -101,6 +111,7 @@ public class NewJFrame extends javax.swing.JFrame {
         jRadioButton3.setLabel("Rhombus");
 
         buttonGroup1.add(jRadioButton4);
+        jRadioButton4.setActionCommand("фыв");
         jRadioButton4.setLabel("Parallelogram");
 
         buttonGroup1.add(jRadioButton5);
@@ -111,7 +122,19 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
-        jScrollPane1.setViewportView(jTree1);
+        jButton1.setText("Save");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Load");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -120,11 +143,7 @@ public class NewJFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
-                        .addContainerGap())
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jRadioButton2)
@@ -136,35 +155,39 @@ public class NewJFrame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jRadioButton5))
                             .addComponent(jRadioButton4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(100, 100, 100)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(148, 148, 148))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(jRadioButton1)
                             .addComponent(jRadioButton3)
-                            .addComponent(jRadioButton5))
+                            .addComponent(jRadioButton5)
+                            .addComponent(jButton1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jRadioButton2)
                             .addComponent(jRadioButton4)
-                            .addComponent(jLabel6)))
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel6)
+                            .addComponent(jButton3)))
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -172,6 +195,7 @@ public class NewJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        listOfFigures.removeAll(listOfFigures);
         jPanel1.removeAll();
         jPanel1.repaint(); 
         jLabel5.setText("-");
@@ -183,29 +207,79 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton5ActionPerformed
 
     private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
-        // TODO add your handling code here:
-        // Нажали
-        start = new Point(evt.getX(), evt.getY());
-        
-        
-        
+        start = new Point(evt.getX(), evt.getY());          
+        jLabel5.setText("-");
+        jLabel6.setText("-");
     }//GEN-LAST:event_jPanel1MousePressed
 
     private void jPanel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseReleased
-        // TODO add your handling code here:
-        // Отпустили
         Graphics g = this.jPanel1.getGraphics(); 
         String nowFigure  = buttonGroup1.getSelection().getActionCommand();
-        int countOfFigures = 0;
+        int countOfFigures = 0;        
         for (int i = 0; i < listOfFigures.size(); i++) 
             if (listOfFigures.get(i).type == nowFigure)
-                countOfFigures++;            
-        myStruct newFigure = new myStruct((int)Math.min(start.getX(), evt.getX()),
-                                          (int)Math.min(start.getY(), evt.getY()),
-                                          (int)Math.abs(start.getX() - evt.getX()),
-                                          (int)Math.abs(start.getY() - evt.getY()),
-                                           nowFigure, nowFigure + " " + String.valueOf(countOfFigures));
-        listOfFigures.add(newFigure);       
+                countOfFigures++;
+                   
+        switch(nowFigure) {
+            case "Circle":
+                Circle cir = new Circle((int)Math.min(start.getX(), evt.getX()), 
+                                (int)Math.min(start.getY(), evt.getY()),
+                                (int)Math.abs(start.getX() - evt.getX()), 
+                                (int)Math.abs(start.getY() - evt.getY()));
+                jLabel5.setText("Perimetr: " + cir.getPerimeter());
+                jLabel6.setText("Area: " + cir.getArea());  
+                listOfFigures.add(cir);                
+            break;            
+            case "Rectangle":
+                Rectangle rec = new Rectangle((int)Math.min(start.getX(), evt.getX()), 
+                                (int)Math.min(start.getY(), evt.getY()),
+                                (int)Math.abs(start.getX() - evt.getX()), 
+                                (int)Math.abs(start.getY() - evt.getY()));
+                jLabel5.setText("Perimetr: " + rec.getPerimeter());
+                jLabel6.setText("Area: " + rec.getArea()); 
+                listOfFigures.add(rec);  
+            break;
+            case "Rhombus":
+                Rhombus rmb = new Rhombus((int)Math.min(start.getX(), evt.getX()), 
+                                (int)Math.min(start.getY(), evt.getY()),
+                                (int)Math.abs(start.getX() - evt.getX()), 
+                                (int)Math.abs(start.getY() - evt.getY()));
+                jLabel5.setText("Perimetr: " + rmb.getPerimeter());
+                jLabel6.setText("Area: " + rmb.getArea()); 
+                listOfFigures.add(rmb);                  
+            break;
+            case "Parallelogram":
+                Parallelogram par = new Parallelogram((int)Math.min(start.getX(), evt.getX()), 
+                                (int)Math.min(start.getY(), evt.getY()),
+                                (int)Math.abs(start.getX() - evt.getX()), 
+                                (int)Math.abs(start.getY() - evt.getY()));
+                jLabel5.setText("Perimetr: " + par.getPerimeter());
+                jLabel6.setText("Area: " + par.getArea());
+                listOfFigures.add(par);                 
+            break;
+            case "Triangle":
+                Triangle tri = new Triangle((int)Math.min(start.getX(), evt.getX()), 
+                                (int)Math.min(start.getY(), evt.getY()),
+                                (int)Math.abs(start.getX() - evt.getX()), 
+                                (int)Math.abs(start.getY() - evt.getY()));
+                jLabel5.setText("Perimetr: " + tri.getPerimeter());
+                jLabel6.setText("Area: " + tri.getArea());     
+                listOfFigures.add(tri);  
+            break;
+          default:           
+        }          
+        for (Figure i:listOfFigures) 
+            i.draw(g);
+    }//GEN-LAST:event_jPanel1MouseReleased
+
+    private void jPanel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseDragged
+        Graphics g = this.jPanel1.getGraphics(); 
+        String nowFigure  = buttonGroup1.getSelection().getActionCommand();     
+        jPanel1.removeAll();
+        jPanel1.repaint(); 
+        for (Figure i:listOfFigures) 
+           i.draw(g); 
+
         switch(nowFigure) {
             case "Circle":
                 Circle cir = new Circle((int)Math.min(start.getX(), evt.getX()), 
@@ -214,7 +288,7 @@ public class NewJFrame extends javax.swing.JFrame {
                                 (int)Math.abs(start.getY() - evt.getY()));
                 cir.draw(g);
                 jLabel5.setText("Perimetr: " + cir.getPerimeter());
-                jLabel6.setText("Area: " + cir.getArea());                
+                jLabel6.setText("Area: " + cir.getArea());  
             break;            
             case "Rectangle":
                 Rectangle rec = new Rectangle((int)Math.min(start.getX(), evt.getX()), 
@@ -223,7 +297,7 @@ public class NewJFrame extends javax.swing.JFrame {
                                 (int)Math.abs(start.getY() - evt.getY()));
                 rec.draw(g);
                 jLabel5.setText("Perimetr: " + rec.getPerimeter());
-                jLabel6.setText("Area: " + rec.getArea());                
+                jLabel6.setText("Area: " + rec.getArea());
             break;
             case "Rhombus":
                 Rhombus rmb = new Rhombus((int)Math.min(start.getX(), evt.getX()), 
@@ -232,7 +306,7 @@ public class NewJFrame extends javax.swing.JFrame {
                                 (int)Math.abs(start.getY() - evt.getY()));
                 rmb.draw(g);
                 jLabel5.setText("Perimetr: " + rmb.getPerimeter());
-                jLabel6.setText("Area: " + rmb.getArea());                 
+                jLabel6.setText("Area: " + rmb.getArea()); 
             break;
             case "Parallelogram":
                 Parallelogram par = new Parallelogram((int)Math.min(start.getX(), evt.getX()), 
@@ -241,7 +315,7 @@ public class NewJFrame extends javax.swing.JFrame {
                                 (int)Math.abs(start.getY() - evt.getY()));
                 par.draw(g);
                 jLabel5.setText("Perimetr: " + par.getPerimeter());
-                jLabel6.setText("Area: " + par.getArea());                 
+                jLabel6.setText("Area: " + par.getArea());
             break;
             case "Triangle":
                 Triangle tri = new Triangle((int)Math.min(start.getX(), evt.getX()), 
@@ -250,20 +324,152 @@ public class NewJFrame extends javax.swing.JFrame {
                                 (int)Math.abs(start.getY() - evt.getY()));
                 tri.draw(g);
                 jLabel5.setText("Perimetr: " + tri.getPerimeter());
-                jLabel6.setText("Area: " + tri.getArea());                
+                jLabel6.setText("Area: " + tri.getArea()); 
             break;
           default:           
         }  
-    }//GEN-LAST:event_jPanel1MouseReleased
-
-    private void jPanel1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseDragged
-        // TODO add your handling code here:
-        //отрисовка всего массива
-        if(jRadioButton1.isSelected())
-        {
-                }
     }//GEN-LAST:event_jPanel1MouseDragged
 
+    private void jPanel1MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseMoved
+        //Супер костыль, что бы нормально рисовалось
+        //Можешь закоментить и посмотреть чё будет
+        Graphics g = this.jPanel1.getGraphics(); 
+        for (Figure i:listOfFigures) 
+           i.draw(g); 
+    }//GEN-LAST:event_jPanel1MouseMoved
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JSONObject obj = new JSONObject();
+        int iterator = 0;
+        for (Figure i:listOfFigures) {
+            JSONArray f = new JSONArray();
+            f.add("x: " + i.x);
+            f.add("x: " + i.y);
+            f.add("height: " + i.height);
+            f.add("width: " + i.width);
+            f.add("type: " + i.type);      
+            obj.put("Figure " + iterator + ": ", f);
+            iterator++;
+        }           
+        JFileChooser fileChooser = new  JFileChooser();
+        fileChooser.setDialogTitle("Save file");    
+        fileChooser.setFileFilter(new FileTypeFilter(".json", "JSON format"));
+        int result = fileChooser.showSaveDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION){
+            String content = "asdasd";
+            File file = fileChooser.getSelectedFile();
+            try{            
+                if(!file.exists()) 
+                    file.createNewFile();
+                PrintWriter pw = new PrintWriter(file);
+                pw.print(obj.toJSONString());
+                System.out.println("Successfully Copied JSON Object to File...");
+                System.out.println("\nJSON Object: " + obj);
+                pw.close();
+
+            } catch(Exception e) { };   
+        }   
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        int ret = fileChooser.showDialog(null, "Open File");                
+        if (ret == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();  
+            JSONParser parser = new JSONParser();
+            
+            try
+            {
+                Object obj = parser.parse(new FileReader(file));
+                JSONObject jsonObject = (JSONObject) obj;
+                JSONArray slideContent = (JSONArray) jsonObject.get("Figure 2: ");
+                Iterator i = slideContent.iterator();
+                String title = (String)slideContent.get("title");
+
+                while (i.hasNext()) {
+                    JSONObject slide = (JSONObject) i.next();
+                    String title = (String)slide.get("title");
+                    System.out.println(title);
+                }
+                
+                int xxx = 0;
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                String str = jsonObject.get("Figure 2").toString();
+                JSONArray figures = (JSONArray) jsonObject.get("Figure 2");
+                Iterator<String> iterator = figures.iterator();
+                while(iterator.hasNext()){
+                    System.out.println(iterator.next());
+                }
+            }
+            catch(Exception e){
+                
+            }}
+            
+            
+            
+            
+            /*
+            
+            JSONParser jsonParser = new JSONParser();   
+            StringBuilder jsonStrBuilder = new StringBuilder();
+            Scanner inputScanner = new Scanner(new File(file));
+            
+            try (FileReader reader = new FileReader(file))
+            {                  
+                inputScanner = new Scanner(new File("json"));
+                JSONParser parser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) parser.parse(reader);
+                String name = (String) jsonObject.get("Figure 1: "); 
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException ex) {
+                    Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ParseException ex) {
+                    Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        }  
+            */
+        
+        //JFileChooser fileopen = new JFileChooser();             
+        //int ret = fileopen.showDialog(null, "Открыть файл");
+    }//GEN-LAST:event_jButton3ActionPerformed
+   
+        /*
+    private static void parseEmployeeObject(JSONObject employee)
+    {
+        //Get employee object within list
+        JSONObject employeeObject = (JSONObject) employee.get("employee");
+         
+        //Get employee first name
+        String firstName = (String) employeeObject.get("firstName");   
+        System.out.println(firstName);
+         
+        //Get employee last name
+        String lastName = (String) employeeObject.get("lastName"); 
+        System.out.println(lastName);
+         
+        //Get employee website name
+        String website = (String) employeeObject.get("website");   
+        System.out.println(website);
+    }
+        */
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     /**
      * @param args the command line arguments
@@ -302,7 +508,9 @@ public class NewJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
@@ -311,7 +519,5 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JRadioButton jRadioButton5;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTree jTree1;
     // End of variables declaration//GEN-END:variables
 }

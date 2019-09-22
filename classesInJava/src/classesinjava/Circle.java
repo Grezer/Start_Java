@@ -13,13 +13,11 @@ import java.awt.*;
 
 public class Circle extends Figure
 {
-    private int width;
-    private int height;
-
     Circle(int x, int y, int width, int height){
         super(x,y);
         this.width = width;
         this.height = height;
+        this.type = "Circle";
     }
     
     public void draw(Graphics g) {

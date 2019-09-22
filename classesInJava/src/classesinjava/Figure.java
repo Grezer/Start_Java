@@ -11,8 +11,11 @@ import java.awt.*;
 */
 // абстрактный класс фигуры
 abstract class Figure{
+    String type;
     int x;
     int y;
+    int width;
+    int height;
     Figure(int x, int y){
         this.x=x;
         this.y=y;
