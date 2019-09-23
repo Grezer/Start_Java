@@ -382,8 +382,31 @@ public class NewJFrame extends javax.swing.JFrame {
             {
                 //Read JSON file
                 Object obj = parser.parse(reader);
-
-                JSONArray employeeList = (JSONArray) obj;
+                JSONObject jo = (JSONObject) obj;
+                int asd = jo.size();
+                JSONArray fig = (JSONArray) jo.get("Figure 1: ");  
+                Iterator phonesItr = fig.iterator();
+                
+                int newX = 0;
+                int newY = 0;
+                int newWidth = 0;
+                int newHight = 0;
+                String type = "";
+                
+                
+                
+                while (phonesItr.hasNext()) {
+                    String test = (String) phonesItr.next();
+                    if(test.charAt(0) == 'x')
+                    {
+                        String wtf = test.split(" ")[1];
+                        newX = Integer.parseInt(test.split(" ")[1]); 
+                    }
+                                
+                }
+                int asdasdasdasdasdasdasd = newX;      
+                
+                JSONArray employeeList = (JSONArray)obj;
                 System.out.println(employeeList);
 
                 //Iterate over employee array
