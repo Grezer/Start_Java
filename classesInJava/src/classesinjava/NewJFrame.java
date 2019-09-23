@@ -344,7 +344,7 @@ public class NewJFrame extends javax.swing.JFrame {
         for (Figure i:listOfFigures) {
             JSONArray f = new JSONArray();
             f.add("x: " + i.x);
-            f.add("x: " + i.y);
+            f.add("y: " + i.y);
             f.add("height: " + i.height);
             f.add("width: " + i.width);
             f.add("type: " + i.type);      
@@ -377,7 +377,31 @@ public class NewJFrame extends javax.swing.JFrame {
         if (ret == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();  
             JSONParser parser = new JSONParser();
+            int x = 111;
+            try (FileReader reader = new FileReader(file))
+            {
+                //Read JSON file
+                Object obj = parser.parse(reader);
+
+                JSONArray employeeList = (JSONArray) obj;
+                System.out.println(employeeList);
+
+                //Iterate over employee array
+                employeeList.forEach( emp -> parseEmployeeObject( (JSONObject) emp ) );
+                
+
+            } catch (Exception e) {
+                
+            }
             
+            
+            
+            
+            
+            
+            
+            
+            /*
             try
             {
                 Object obj = parser.parse(new FileReader(file));
@@ -394,14 +418,6 @@ public class NewJFrame extends javax.swing.JFrame {
                 
                 int xxx = 0;
                 
-                
-                
-                
-                
-                
-                
-                
-                
                 String str = jsonObject.get("Figure 2").toString();
                 JSONArray figures = (JSONArray) jsonObject.get("Figure 2");
                 Iterator<String> iterator = figures.iterator();
@@ -412,6 +428,7 @@ public class NewJFrame extends javax.swing.JFrame {
             catch(Exception e){
                 
             }}
+            */
             
             
             
@@ -440,27 +457,25 @@ public class NewJFrame extends javax.swing.JFrame {
         
         //JFileChooser fileopen = new JFileChooser();             
         //int ret = fileopen.showDialog(null, "Открыть файл");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
    
-        /*
+        
     private static void parseEmployeeObject(JSONObject employee)
     {
         //Get employee object within list
-        JSONObject employeeObject = (JSONObject) employee.get("employee");
+        JSONObject figureObject = (JSONObject) employee.get("Figure 1");
          
         //Get employee first name
-        String firstName = (String) employeeObject.get("firstName");   
-        System.out.println(firstName);
+        String x = (String) figureObject.get("x");   
+        System.out.println(x);
          
         //Get employee last name
-        String lastName = (String) employeeObject.get("lastName"); 
-        System.out.println(lastName);
-         
-        //Get employee website name
-        String website = (String) employeeObject.get("website");   
-        System.out.println(website);
+        String y = (String) figureObject.get("y"); 
+        System.out.println(y);
+       
     }
-        */
+        
     
     
     
