@@ -339,16 +339,16 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel1MouseMoved
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JSONObject obj = new JSONObject();
+        JSONObject objectFigure = new JSONObject();
         int iterator = 0;
         for (Figure i:listOfFigures) {
-            JSONArray f = new JSONArray();
-            f.add("x: " + i.x);
-            f.add("y: " + i.y);
-            f.add("height: " + i.height);
-            f.add("width: " + i.width);
-            f.add("type: " + i.type);      
-            obj.put("Figure " + iterator + ": ", f);
+            JSONArray figureJSON = new JSONArray();
+            figureJSON.add("x: " + i.x);
+            figureJSON.add("y: " + i.y);
+            figureJSON.add("height: " + i.height);
+            figureJSON.add("width: " + i.width);
+            figureJSON.add("type: " + i.type);      
+            objectFigure.put("Figure " + iterator + ": ", figureJSON);
             iterator++;
         }           
         JFileChooser fileChooser = new  JFileChooser();
@@ -356,18 +356,14 @@ public class NewJFrame extends javax.swing.JFrame {
         fileChooser.setFileFilter(new FileTypeFilter(".json", "JSON format"));
         int result = fileChooser.showSaveDialog(null);
         if (result == JFileChooser.APPROVE_OPTION){
-            String content = "asdasd";
             File file = fileChooser.getSelectedFile();
             try{            
                 if(!file.exists()) 
                     file.createNewFile();
                 PrintWriter pw = new PrintWriter(file);
-                pw.print(obj.toJSONString());
-                System.out.println("Successfully Copied JSON Object to File...");
-                System.out.println("\nJSON Object: " + obj);
+                pw.print(objectFigure.toJSONString());
                 pw.close();
-
-            } catch(Exception e) { };   
+            } catch(Exception e) { }  
         }   
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -375,111 +371,65 @@ public class NewJFrame extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         int ret = fileChooser.showDialog(null, "Open File");                
         if (ret == JFileChooser.APPROVE_OPTION) {
+            listOfFigures.removeAll(listOfFigures);
             File file = fileChooser.getSelectedFile();  
             JSONParser parser = new JSONParser();
             int x = 111;
             try (FileReader reader = new FileReader(file))
             {
-                //Read JSON file
                 Object obj = parser.parse(reader);
-                JSONObject jo = (JSONObject) obj;
-                int asd = jo.size();
-                JSONArray fig = (JSONArray) jo.get("Figure 1: ");  
-                Iterator phonesItr = fig.iterator();
-                
-                int newX = 0;
-                int newY = 0;
-                int newWidth = 0;
-                int newHight = 0;
-                String type = "";
-                
-                
-                
-                while (phonesItr.hasNext()) {
-                    String test = (String) phonesItr.next();
-                    if(test.charAt(0) == 'x')
-                    {
-                        String wtf = test.split(" ")[1];
-                        newX = Integer.parseInt(test.split(" ")[1]); 
+                JSONObject rootElement = (JSONObject) obj;
+                for (int numFigure = 0; x < rootElement.size(); numFigure++) {
+                    int newX = 0;
+                    int newY = 0;
+                    int newWidth = 0;
+                    int newHight = 0;
+                    String newType = "";   
+                    JSONArray figureJSON = (JSONArray) rootElement.get("Figure " + numFigure + ": ");  
+                    Iterator properties = figureJSON.iterator();
+                    while (properties.hasNext()) {
+                        String test = (String) properties.next();
+                        if(test.charAt(0) == 'x') 
+                            newX = Integer.parseInt(test.split(" ")[1]); 
+                        if(test.charAt(0) == 'y') 
+                            newY = Integer.parseInt(test.split(" ")[1]);
+                        if(test.charAt(0) == 'h') 
+                            newHight = Integer.parseInt(test.split(" ")[1]);
+                        if(test.charAt(0) == 'w') 
+                            newWidth = Integer.parseInt(test.split(" ")[1]);
+                        if(test.charAt(0) == 't') 
+                            newType = test.split(" ")[1];                                                   
                     }
-                                
-                }
-                int asdasdasdasdasdasdasd = newX;      
-                
-                JSONArray employeeList = (JSONArray)obj;
-                System.out.println(employeeList);
-
-                //Iterate over employee array
-                employeeList.forEach( emp -> parseEmployeeObject( (JSONObject) emp ) );
-                
-
-            } catch (Exception e) {
-                
-            }
-            
-            
-            
-            
-            
-            
-            
-            
-            /*
-            try
-            {
-                Object obj = parser.parse(new FileReader(file));
-                JSONObject jsonObject = (JSONObject) obj;
-                JSONArray slideContent = (JSONArray) jsonObject.get("Figure 2: ");
-                Iterator i = slideContent.iterator();
-                String title = (String)slideContent.get("title");
-
-                while (i.hasNext()) {
-                    JSONObject slide = (JSONObject) i.next();
-                    String title = (String)slide.get("title");
-                    System.out.println(title);
-                }
-                
-                int xxx = 0;
-                
-                String str = jsonObject.get("Figure 2").toString();
-                JSONArray figures = (JSONArray) jsonObject.get("Figure 2");
-                Iterator<String> iterator = figures.iterator();
-                while(iterator.hasNext()){
-                    System.out.println(iterator.next());
-                }
-            }
-            catch(Exception e){
-                
-            }}
-            */
-            
-            
-            
-            
-            /*
-            
-            JSONParser jsonParser = new JSONParser();   
-            StringBuilder jsonStrBuilder = new StringBuilder();
-            Scanner inputScanner = new Scanner(new File(file));
-            
-            try (FileReader reader = new FileReader(file))
-            {                  
-                inputScanner = new Scanner(new File("json"));
-                JSONParser parser = new JSONParser();
-                JSONObject jsonObject = (JSONObject) parser.parse(reader);
-                String name = (String) jsonObject.get("Figure 1: "); 
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException ex) {
-                    Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ParseException ex) {
-                    Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-        }  
-            */
-        
-        //JFileChooser fileopen = new JFileChooser();             
-        //int ret = fileopen.showDialog(null, "Открыть файл");
+                    // add to list
+                    switch(newType) {
+                        case "Circle":
+                            Circle cir = new Circle(newX, newY, newWidth, newHight); 
+                            listOfFigures.add(cir);
+                        break;            
+                        case "Rectangle":
+                            Rectangle rec = new Rectangle(newX, newY, newWidth, newHight);
+                            listOfFigures.add(rec);
+                        break;
+                        case "Rhombus":
+                            Rhombus rmb = new Rhombus(newX, newY, newWidth, newHight);
+                            listOfFigures.add(rmb);
+                        break;
+                        case "Parallelogram":
+                            Parallelogram par = new Parallelogram(newX, newY, newWidth, newHight);
+                            listOfFigures.add(par);
+                        break;
+                        case "Triangle":
+                            Triangle tri = new Triangle(newX, newY, newWidth, newHight);
+                            listOfFigures.add(tri);
+                        break;
+                      default:           
+                    }
+                }                 
+            } catch (Exception e) { System.out.println(e.getMessage()); }
+            jPanel1.removeAll();
+            jPanel1.repaint(); 
+            for (Figure i:listOfFigures) 
+                i.draw(this.jPanel1.getGraphics());
         }
     }//GEN-LAST:event_jButton3ActionPerformed
    
