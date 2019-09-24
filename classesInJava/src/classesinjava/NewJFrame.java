@@ -379,7 +379,8 @@ public class NewJFrame extends javax.swing.JFrame {
             {
                 Object obj = parser.parse(reader);
                 JSONObject rootElement = (JSONObject) obj;
-                for (int numFigure = 0; x < rootElement.size(); numFigure++) {
+                int фывфывфыв = rootElement.size();
+                for (int numFigure = 0; numFigure < rootElement.size(); numFigure++) {
                     int newX = 0;
                     int newY = 0;
                     int newWidth = 0;
@@ -433,32 +434,6 @@ public class NewJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
    
-        
-    private static void parseEmployeeObject(JSONObject employee)
-    {
-        //Get employee object within list
-        JSONObject figureObject = (JSONObject) employee.get("Figure 1");
-         
-        //Get employee first name
-        String x = (String) figureObject.get("x");   
-        System.out.println(x);
-         
-        //Get employee last name
-        String y = (String) figureObject.get("y"); 
-        System.out.println(y);
-       
-    }
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     /**
      * @param args the command line arguments
      */
