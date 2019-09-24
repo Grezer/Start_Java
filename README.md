@@ -3,9 +3,9 @@
 ---
 
 ## Где что лежит
-В файле [Figure](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Figure.java) описан абстрактный класс для фигурок
-От него наследуются 5 классов: [Circle](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Circle.java), [Rectangle](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Rectangle.java), [Rhombus](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Rhombus.java), [Parallelogram](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Parallelogram.java) и [Triangle](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Triangle.java) 
-В [FileTypeFilter](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/FileTypeFilter.java) описан фильтр для форматов файла (нужен для окна сохранения файла)
+В файле [Figure](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Figure.java) описан абстрактный класс для фигурок  
+От него наследуются 5 классов: [Circle](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Circle.java), [Rectangle](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Rectangle.java), [Rhombus](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Rhombus.java), [Parallelogram](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Parallelogram.java) и [Triangle](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Triangle.java)   
+В [FileTypeFilter](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/FileTypeFilter.java) описан фильтр для форматов файла (нужен для окна сохранения файла)  
 Ну и в [NewJFrame](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/NewJFrame.java) вся логика
 
 ---
@@ -100,14 +100,19 @@ listOfFigures.add(tri);
 ---
 
 ## Сохранение и загрузка JSON
-Для формирования и чтения JSON используется библиотека [JSON-Simple](https://code.google.com/archive/p/json-simple/downloads) версии 1.1.1
-Для подключения к проекту можно просто закинуть файлик .jar в папку с проектом после чего в NetBeans перейти в Файл -> Свойства. Выбрать в дереве пункт "Библиотеки" и нажать "Добавить файл JAR/папку" после чего просто выбрать наш файлик
+Для формирования и чтения JSON используется библиотека [JSON-Simple](https://code.google.com/archive/p/json-simple/downloads) версии 1.1.1  
+Для подключения к проекту можно просто закинуть файлик .jar в папку с проектом  
+Затем в NetBeans перейти в Файл -> Свойства  
+Выбрать в дереве пункт "Библиотеки" и нажать "Добавить файл JAR/папку" и просто выбрать наш файлик
+
+![addJar.png](https://github.com/Grezer/Start_Java/blob/master/addJar.png)
+
 
 
 ### Сохранение
-Создаём объект JSON ```objectFigure``` и для каждой фигуры формируем массив ```figureJSON```
-Заполняем его свойствами фигуры после чего пихаем массив в наш объект и даём ему имя ```objectFigure.put("Figure " + iterator + ": ", figureJSON);```
-Затем вызываем ```JFileChooser``` и пишем наш объект в созданный файлик
+Создаём объект JSON ```objectFigure``` и для каждой фигуры формируем массив ```figureJSON```  
+Заполняем его свойствами фигуры после чего пихаем массив в наш объект и даём ему имя ```objectFigure.put("Figure " + iterator + ": ", figureJSON);```  
+Затем вызываем ```JFileChooser``` и пишем наш объект в созданный файлик  
 ```java
 JSONObject objectFigure = new JSONObject();
 int iterator = 0;
@@ -136,9 +141,9 @@ if (result == JFileChooser.APPROVE_OPTION){
     } catch(Exception e) { }  
 }   
 ```
-Тут важный момент в 15 строчке 
-Дело в том, что класса ```FileTypeFilter();``` у нас не существует
-Поэтому его надо написать :)
+Тут важный момент в 15 строчке   
+Дело в том, что класса ```FileTypeFilter();``` у нас не существует  
+Поэтому его надо написать :)  
 ```java
 package classesinjava;
 import java.io.File;
