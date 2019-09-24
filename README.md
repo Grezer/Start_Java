@@ -171,6 +171,34 @@ public class FileTypeFilter extends FileFilter{
     }
 }
 ```
+
+В итоге получается файлик в формате JSON
+```
+{
+    "Figure 2: ": [
+        "x: 93",
+        "y: 102",
+        "height: 90",
+        "width: 99",
+        "type: Rectangle"
+    ],
+    "Figure 1: ": [
+        "x: 211",
+        "y: 233",
+        "height: 71",
+        "width: 326",
+        "type: Parallelogram"
+    ],
+    "Figure 0: ": [
+        "x: 146",
+        "y: 106",
+        "height: 139",
+        "width: 215",
+        "type: Circle"
+    ]
+}
+```
+
 ### Загрузка
 Призываем великий и ужасный ```JFileChooser``` и если диалог удался ```if (ret == JFileChooser.APPROVE_OPTION)``` идём читать файлик и объявляем парсер
 ```java
