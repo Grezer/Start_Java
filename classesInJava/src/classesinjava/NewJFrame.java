@@ -4,18 +4,13 @@
  * and open the template in the editor.
  */
 package classesinjava;
-import java.awt.Color;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.*;
 import javax.swing.*;
 import java.io.*;
-import java.nio.file.spi.FileTypeDetector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 /**
  *
  * @author Grezer
@@ -215,11 +210,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jPanel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseReleased
         Graphics g = this.jPanel1.getGraphics(); 
         String nowFigure  = buttonGroup1.getSelection().getActionCommand();
-        int countOfFigures = 0;        
-        for (int i = 0; i < listOfFigures.size(); i++) 
-            if (listOfFigures.get(i).type == nowFigure)
-                countOfFigures++;
-                   
+        
         switch(nowFigure) {
             case "Circle":
                 Circle cir = new Circle((int)Math.min(start.getX(), evt.getX()), 
@@ -374,12 +365,10 @@ public class NewJFrame extends javax.swing.JFrame {
             listOfFigures.removeAll(listOfFigures);
             File file = fileChooser.getSelectedFile();  
             JSONParser parser = new JSONParser();
-            int x = 111;
             try (FileReader reader = new FileReader(file))
             {
                 Object obj = parser.parse(reader);
                 JSONObject rootElement = (JSONObject) obj;
-                int фывфывфыв = rootElement.size();
                 for (int numFigure = 0; numFigure < rootElement.size(); numFigure++) {
                     int newX = 0;
                     int newY = 0;

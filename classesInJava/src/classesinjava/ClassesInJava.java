@@ -20,8 +20,5 @@ public class ClassesInJava {
         // TODO code application logic here
         NewJFrame a = new NewJFrame();
         a.setVisible(true);
-        JTextField x = new JTextField();
-        x.setVisible(true);
-    }
-    
+    }    
 }
