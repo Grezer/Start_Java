@@ -20,8 +20,13 @@ abstract class Figure{
         this.x=x;
         this.y=y;
     }
-
+    
+    public String getType() {
+        return this.getClass().getName();
+    }
+    
     public abstract double getPerimeter();    
     public abstract double getArea();    
     public abstract void draw(Graphics g);
+//    public abstract String toJSON();    
 }
