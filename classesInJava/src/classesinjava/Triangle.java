@@ -18,7 +18,7 @@ public class Triangle extends Figure
         super(x,y);
         this.width = width;
         this.height = height;
-        this.type = "Triangle";
+        this.type = this.getClass().getName().split("java.")[1];
     }
 
     Triangle(int x, int y, int x2, int y2, int x3, int y3){

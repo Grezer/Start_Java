@@ -16,7 +16,7 @@ public class Rhombus  extends Figure
         super(x,y);
         this.width = width;
         this.height = height;
-        this.type = "Rhombus";
+        this.type = this.getClass().getName().split("java.")[1];
     }
     
     public void draw(Graphics g) {

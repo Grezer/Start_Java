@@ -415,7 +415,7 @@ public class NewJFrame extends javax.swing.JFrame {
                       default:           
                     }
                 }                 
-            } catch (Exception e) { System.out.println(e.getMessage()); }
+            } catch (Exception e) { System.out.println(e.getMessage()); }     
             jPanel1.removeAll();
             jPanel1.repaint(); 
             for (Figure i:listOfFigures) 
