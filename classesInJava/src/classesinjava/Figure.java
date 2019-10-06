@@ -5,6 +5,7 @@
 */
 package classesinjava;
 import java.awt.*;
+import org.json.simple.JSONObject;
 /**
 *
 * @author Grezer
@@ -28,5 +29,6 @@ abstract class Figure{
     public abstract double getPerimeter();    
     public abstract double getArea();    
     public abstract void draw(Graphics g);
-//    public abstract String toJSON();    
+    public abstract JSONObject toJSON();  
+    public abstract Figure fromJSON(JSONObject obj); 
 }

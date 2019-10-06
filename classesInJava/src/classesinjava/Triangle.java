@@ -5,6 +5,7 @@
  */
 package classesinjava;
 import java.awt.*;
+import org.json.simple.JSONObject;
 
 /**
 *
@@ -44,6 +45,17 @@ public class Triangle extends Figure
     public double getArea(){         
         return width / 2 + height;
     }
+    
+    public JSONObject toJSON(){
+        JSONObject objectFigure = new JSONObject();  
+        objectFigure.put("x", x);
+        objectFigure.put("y", y);
+        objectFigure.put("height", height);
+        objectFigure.put("width", width);
+        objectFigure.put("type", getClass().getName().split("java.")[1]);
+        return objectFigure;   
+    }
+    
     
 //    static Triangle fromJSON(String json) {
 //        return new Triangle(json...)

@@ -330,18 +330,9 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel1MouseMoved
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JSONObject objectFigure = new JSONObject();
-        int iterator = 0;
-        for (Figure i:listOfFigures) {
-            JSONArray figureJSON = new JSONArray();
-            figureJSON.add("x: " + i.x);
-            figureJSON.add("y: " + i.y);
-            figureJSON.add("height: " + i.height);
-            figureJSON.add("width: " + i.width);
-            figureJSON.add("type: " + i.type);      
-            objectFigure.put("Figure " + iterator + ": ", figureJSON);
-            iterator++;
-        }           
+        JSONArray figureJSON = new JSONArray();
+        for (Figure i:listOfFigures)    
+            figureJSON.add(i.toJSON());                   
         JFileChooser fileChooser = new  JFileChooser();
         fileChooser.setDialogTitle("Save file");    
         fileChooser.setFileFilter(new FileTypeFilter(".json", "JSON format"));
@@ -352,7 +343,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 if(!file.exists()) 
                     file.createNewFile();
                 PrintWriter pw = new PrintWriter(file);
-                pw.print(objectFigure.toJSONString());
+                pw.print(figureJSON.toJSONString());
                 pw.close();
             } catch(Exception e) { }  
         }   
@@ -368,7 +359,22 @@ public class NewJFrame extends javax.swing.JFrame {
             try (FileReader reader = new FileReader(file))
             {
                 Object obj = parser.parse(reader);
-                JSONObject rootElement = (JSONObject) obj;
+                JSONArray rootArray = (JSONArray) obj;
+                Iterator figures = rootArray.iterator();
+                while (figures.hasNext()) {                  
+                    JSONObject test = (JSONObject) figures.next();
+                    Long x = (Long)test.get("x");
+                    //String x = (String)test.get("type"); FUCK
+
+                }
+                
+                
+                
+                
+                
+                
+                
+                //JSONObject rootElement = (JSONObject) obj;
                 for (int numFigure = 0; numFigure < rootElement.size(); numFigure++) {
                     int newX = 0;
                     int newY = 0;
