@@ -37,14 +37,22 @@ public class Parallelogram extends Figure
     public double getArea(){         
         return (0.6 * width * height) + (0.2 * width * height);
     }
-    public JSONObject toJSON(){
-        JSONObject objectFigure = new JSONObject();  
-        objectFigure.put("x", x);
-        objectFigure.put("y", y);
-        objectFigure.put("height", height);
-        objectFigure.put("width", width);
-        objectFigure.put("type", getClass().getName().split("java.")[1]);
+    
+    public static JSONObject toJSON(Figure inputFigure){
+        JSONObject objectFigure = new JSONObject();
+        objectFigure.put("x", inputFigure.x);
+        objectFigure.put("y", inputFigure.y);
+        objectFigure.put("height", inputFigure.height);
+        objectFigure.put("width", inputFigure.width);
+        objectFigure.put("type", inputFigure.getClass().getName().split("java.")[1]);
         return objectFigure;   
     }
     
+    public static Parallelogram fromJSON(JSONObject inputJSON){
+        Parallelogram newFigure = new Parallelogram(Integer.parseInt((String)inputJSON.get("x")), 
+                Integer.parseInt((String)inputJSON.get("y")), 
+                Integer.parseInt((String)inputJSON.get("width")), 
+                Integer.parseInt((String)inputJSON.get("height")));
+        return newFigure;
+    }    
 }

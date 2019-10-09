@@ -35,21 +35,30 @@ public class Circle extends Figure
         return Math.PI * (width / 2 + height / 2);
     }
     
-    public JSONObject toJSON(){
+    public static JSONObject toJSON(Figure inputFigure){
         JSONObject objectFigure = new JSONObject();
-        objectFigure.put("x", x);
-        objectFigure.put("y", y);
-        objectFigure.put("height", height);
-        objectFigure.put("width", width);
-        objectFigure.put("type", getClass().getName().split("java.")[1]);
+        objectFigure.put("x", inputFigure.x);
+        objectFigure.put("y", inputFigure.y);
+        objectFigure.put("height", inputFigure.height);
+        objectFigure.put("width", inputFigure.width);
+        objectFigure.put("type", inputFigure.getClass().getName().split("java.")[1]);
         return objectFigure;   
     }
     
-    public Circle fromJSON(JSONObject obj){
-        Circle newFigure = new Circle(Integer.parseInt((String)obj.get("x")), 
-                Integer.parseInt((String)obj.get("y")), 
-                Integer.parseInt((String)obj.get("width")), 
-                Integer.parseInt((String)obj.get("height")));
+    public static Circle fromJSON(JSONObject inputJSON){
+        long x = (long)inputJSON.get("x");
+        long y = (long)inputJSON.get("y");
+        long width = (long)inputJSON.get("width");
+        long height = (long)inputJSON.get("height");
+        Circle newFigure = new Circle((int)x, (int)y, (int)width, (int)height);
+        
+        
+        /*
+        Circle newFigure = new Circle(Integer.parseInt((String)inputJSON.get("x")), 
+                Integer.parseInt((String)inputJSON.get("y")), 
+                Integer.parseInt((String)inputJSON.get("width")), 
+                Integer.parseInt((String)inputJSON.get("height")));
+*/
         return newFigure;
     }
 }

@@ -33,15 +33,23 @@ public class Rhombus  extends Figure
      
     public double getArea(){         
         return width * height / 2;
-    }   
-    public JSONObject toJSON(){
-        JSONObject objectFigure = new JSONObject();  
-        objectFigure.put("x", x);
-        objectFigure.put("y", y);
-        objectFigure.put("height", height);
-        objectFigure.put("width", width);
-        objectFigure.put("type", getClass().getName().split("java.")[1]);
+    } 
+    
+    public static JSONObject toJSON(Figure inputFigure){
+        JSONObject objectFigure = new JSONObject();
+        objectFigure.put("x", inputFigure.x);
+        objectFigure.put("y", inputFigure.y);
+        objectFigure.put("height", inputFigure.height);
+        objectFigure.put("width", inputFigure.width);
+        objectFigure.put("type", inputFigure.getClass().getName().split("java.")[1]);
         return objectFigure;   
     }
     
+    public static Rhombus fromJSON(JSONObject inputJSON){
+        Rhombus newFigure = new Rhombus(Integer.parseInt((String)inputJSON.get("x")), 
+                Integer.parseInt((String)inputJSON.get("y")), 
+                Integer.parseInt((String)inputJSON.get("width")), 
+                Integer.parseInt((String)inputJSON.get("height")));
+        return newFigure;
+    }   
 }

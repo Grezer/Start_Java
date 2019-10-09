@@ -332,7 +332,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JSONArray figureJSON = new JSONArray();
         for (Figure i:listOfFigures)    
-            figureJSON.add(i.toJSON());                   
+            figureJSON.add(FigureCreator.toJSON(i));        
         JFileChooser fileChooser = new  JFileChooser();
         fileChooser.setDialogTitle("Save file");    
         fileChooser.setFileFilter(new FileTypeFilter(".json", "JSON format"));
