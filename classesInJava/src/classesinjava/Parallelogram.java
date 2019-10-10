@@ -38,21 +38,22 @@ public class Parallelogram extends Figure
         return (0.6 * width * height) + (0.2 * width * height);
     }
     
-    public static JSONObject toJSON(Figure inputFigure){
+    public JSONObject toJSON(){
         JSONObject objectFigure = new JSONObject();
-        objectFigure.put("x", inputFigure.x);
-        objectFigure.put("y", inputFigure.y);
-        objectFigure.put("height", inputFigure.height);
-        objectFigure.put("width", inputFigure.width);
-        objectFigure.put("type", inputFigure.getClass().getName().split("java.")[1]);
+        objectFigure.put("x", this.x);
+        objectFigure.put("y", this.y);
+        objectFigure.put("height", this.height);
+        objectFigure.put("width", this.width);
+        //objectFigure.put("type", inputFigure.getClass().getName().split("java.")[1]);
         return objectFigure;   
-    }
+    }  
     
     public static Parallelogram fromJSON(JSONObject inputJSON){
-        Parallelogram newFigure = new Parallelogram(Integer.parseInt((String)inputJSON.get("x")), 
-                Integer.parseInt((String)inputJSON.get("y")), 
-                Integer.parseInt((String)inputJSON.get("width")), 
-                Integer.parseInt((String)inputJSON.get("height")));
+        long x = (long)inputJSON.get("x");
+        long y = (long)inputJSON.get("y");
+        long width = (long)inputJSON.get("width");
+        long height = (long)inputJSON.get("height");
+        Parallelogram newFigure = new Parallelogram((int)x, (int)y, (int)width, (int)height); 
         return newFigure;
-    }    
+    }  
 }

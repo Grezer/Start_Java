@@ -332,7 +332,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         JSONArray figureJSON = new JSONArray();
         for (Figure i:listOfFigures)    
-            figureJSON.add(FigureCreator.toJSON(i));        
+            figureJSON.add(FigureCreator.toJSON(i));         
         JFileChooser fileChooser = new  JFileChooser();
         fileChooser.setDialogTitle("Save file");    
         fileChooser.setFileFilter(new FileTypeFilter(".json", "JSON format"));
@@ -361,72 +361,16 @@ public class NewJFrame extends javax.swing.JFrame {
                 Object obj = parser.parse(reader);
                 JSONArray rootArray = (JSONArray) obj;
                 Iterator figures = rootArray.iterator();
-                while (figures.hasNext()) {                  
+                while (figures.hasNext()) {                    
                     JSONObject test = (JSONObject) figures.next();
-                    Long x = (Long)test.get("x");
-                    //String x = (String)test.get("type"); FUCK
-
+                    listOfFigures.add(FigureCreator.fromJSON(test));
                 }
-                
-                
-                
-                
-                
-                
-                
-                //JSONObject rootElement = (JSONObject) obj;
-                for (int numFigure = 0; numFigure < rootElement.size(); numFigure++) {
-                    int newX = 0;
-                    int newY = 0;
-                    int newWidth = 0;
-                    int newHight = 0;
-                    String newType = "";   
-                    JSONArray figureJSON = (JSONArray) rootElement.get("Figure " + numFigure + ": ");  
-                    Iterator properties = figureJSON.iterator();
-                    while (properties.hasNext()) {
-                        String test = (String) properties.next();
-                        if(test.charAt(0) == 'x') 
-                            newX = Integer.parseInt(test.split(" ")[1]); 
-                        if(test.charAt(0) == 'y') 
-                            newY = Integer.parseInt(test.split(" ")[1]);
-                        if(test.charAt(0) == 'h') 
-                            newHight = Integer.parseInt(test.split(" ")[1]);
-                        if(test.charAt(0) == 'w') 
-                            newWidth = Integer.parseInt(test.split(" ")[1]);
-                        if(test.charAt(0) == 't') 
-                            newType = test.split(" ")[1];                                                   
-                    }
-                    // add to list
-                    switch(newType) {
-                        case "Circle":
-                            Circle cir = new Circle(newX, newY, newWidth, newHight); 
-                            listOfFigures.add(cir);
-                        break;            
-                        case "Rectangle":
-                            Rectangle rec = new Rectangle(newX, newY, newWidth, newHight);
-                            listOfFigures.add(rec);
-                        break;
-                        case "Rhombus":
-                            Rhombus rmb = new Rhombus(newX, newY, newWidth, newHight);
-                            listOfFigures.add(rmb);
-                        break;
-                        case "Parallelogram":
-                            Parallelogram par = new Parallelogram(newX, newY, newWidth, newHight);
-                            listOfFigures.add(par);
-                        break;
-                        case "Triangle":
-                            Triangle tri = new Triangle(newX, newY, newWidth, newHight);
-                            listOfFigures.add(tri);
-                        break;
-                      default:           
-                    }
-                }                 
-            } catch (Exception e) { System.out.println(e.getMessage()); }     
+            } catch (Exception e) { System.out.println(e.getMessage()); }   
             jPanel1.removeAll();
             jPanel1.repaint(); 
             for (Figure i:listOfFigures) 
                 i.draw(this.jPanel1.getGraphics());
-        }
+        }       
     }//GEN-LAST:event_jButton3ActionPerformed
    
     /**

@@ -46,21 +46,22 @@ public class Triangle extends Figure
         return width / 2 + height;
     }
     
-    public static JSONObject toJSON(Figure inputFigure){
+    public JSONObject toJSON(){
         JSONObject objectFigure = new JSONObject();
-        objectFigure.put("x", inputFigure.x);
-        objectFigure.put("y", inputFigure.y);
-        objectFigure.put("height", inputFigure.height);
-        objectFigure.put("width", inputFigure.width);
-        objectFigure.put("type", inputFigure.getClass().getName().split("java.")[1]);
+        objectFigure.put("x", this.x);
+        objectFigure.put("y", this.y);
+        objectFigure.put("height", this.height);
+        objectFigure.put("width", this.width);
+        //objectFigure.put("type", inputFigure.getClass().getName().split("java.")[1]);
         return objectFigure;   
     }
     
-    public static Triangle fromJSON(JSONObject inputJSON){
-        Triangle newFigure = new Triangle(Integer.parseInt((String)inputJSON.get("x")), 
-                Integer.parseInt((String)inputJSON.get("y")), 
-                Integer.parseInt((String)inputJSON.get("width")), 
-                Integer.parseInt((String)inputJSON.get("height")));
+   public static Rhombus fromJSON(JSONObject inputJSON){
+        long x = (long)inputJSON.get("x");
+        long y = (long)inputJSON.get("y");
+        long width = (long)inputJSON.get("width");
+        long height = (long)inputJSON.get("height");
+        Rhombus newFigure = new Rhombus((int)x, (int)y, (int)width, (int)height); 
         return newFigure;
     }   
 }

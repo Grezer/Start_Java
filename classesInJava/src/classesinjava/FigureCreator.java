@@ -31,19 +31,8 @@ public class FigureCreator {
     }
         
     static JSONObject toJSON(Figure inputFigure) {
-        switch (inputFigure.type) {
-           case  ("Circle"):               
-               return Circle.toJSON(inputFigure);
-            case  ("Parallelogram"):
-               return Parallelogram.toJSON(inputFigure);
-            case  ("Rectangle"):
-               return Rectangle.toJSON(inputFigure);
-            case  ("Rhombus"):
-               return Rhombus.toJSON(inputFigure);
-            case  ("Triangle"):
-               return Triangle.toJSON(inputFigure);   
-            default:
-               return null;
-        }
+        JSONObject json = inputFigure.toJSON();
+        json.put("type", inputFigure.getClass().getSimpleName());
+        return json;
     }         
 }
