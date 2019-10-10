@@ -5,6 +5,7 @@
  */
 package classesinjava;
 import java.awt.*;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -18,7 +19,7 @@ public class Parallelogram extends Figure
         super(x,y);
         this.width = width;
         this.height = height;
-        this.type = "Parallelogram";
+        this.type = this.getClass().getName().split("java.")[1];
     }
     public void draw(Graphics g) {
         int[] arrX = {x, (int)(x + width* 0.8), (x + width), (int)(x + width* 0.2), x};
@@ -36,4 +37,23 @@ public class Parallelogram extends Figure
     public double getArea(){         
         return (0.6 * width * height) + (0.2 * width * height);
     }
+    
+    public JSONObject toJSON(){
+        JSONObject objectFigure = new JSONObject();
+        objectFigure.put("x", this.x);
+        objectFigure.put("y", this.y);
+        objectFigure.put("height", this.height);
+        objectFigure.put("width", this.width);
+        //objectFigure.put("type", inputFigure.getClass().getName().split("java.")[1]);
+        return objectFigure;   
+    }  
+    
+    public static Parallelogram fromJSON(JSONObject inputJSON){
+        long x = (long)inputJSON.get("x");
+        long y = (long)inputJSON.get("y");
+        long width = (long)inputJSON.get("width");
+        long height = (long)inputJSON.get("height");
+        Parallelogram newFigure = new Parallelogram((int)x, (int)y, (int)width, (int)height); 
+        return newFigure;
+    }  
 }

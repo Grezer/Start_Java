@@ -5,6 +5,7 @@
  */
 package classesinjava;
 import java.awt.*;
+import org.json.simple.JSONObject;
 /**
  *
  * @author Grezer
@@ -16,7 +17,7 @@ public class Rhombus  extends Figure
         super(x,y);
         this.width = width;
         this.height = height;
-        this.type = "Rhombus";
+        this.type = this.getClass().getName().split("java.")[1];
     }
     
     public void draw(Graphics g) {
@@ -32,5 +33,24 @@ public class Rhombus  extends Figure
      
     public double getArea(){         
         return width * height / 2;
-    }    
+    } 
+    
+    public JSONObject toJSON(){
+        JSONObject objectFigure = new JSONObject();
+        objectFigure.put("x", this.x);
+        objectFigure.put("y", this.y);
+        objectFigure.put("height", this.height);
+        objectFigure.put("width", this.width);
+        //objectFigure.put("type", inputFigure.getClass().getName().split("java.")[1]);
+        return objectFigure;   
+    }
+    
+    public static Rhombus fromJSON(JSONObject inputJSON){
+        long x = (long)inputJSON.get("x");
+        long y = (long)inputJSON.get("y");
+        long width = (long)inputJSON.get("width");
+        long height = (long)inputJSON.get("height");
+        Rhombus newFigure = new Rhombus((int)x, (int)y, (int)width, (int)height); 
+        return newFigure;
+    }   
 }

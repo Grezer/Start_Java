@@ -5,6 +5,9 @@
 */
 package classesinjava;
 import java.awt.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 /**
 *
@@ -17,7 +20,7 @@ public class Circle extends Figure
         super(x,y);
         this.width = width;
         this.height = height;
-        this.type = "Circle";
+        this.type = this.getClass().getName().split("java.")[1];        
     }
     
     public void draw(Graphics g) {
@@ -30,5 +33,24 @@ public class Circle extends Figure
      
     public double getArea(){         
         return Math.PI * (width / 2 + height / 2);
+    }
+    
+    public JSONObject toJSON(){
+        JSONObject objectFigure = new JSONObject();
+        objectFigure.put("x", this.x);
+        objectFigure.put("y", this.y);
+        objectFigure.put("height", this.height);
+        objectFigure.put("width", this.width);
+        //objectFigure.put("type", this.getClass().getName().split("java.")[1]);
+        return objectFigure;   
+    }
+    
+    public static Circle fromJSON(JSONObject inputJSON){
+        long x = (long)inputJSON.get("x");
+        long y = (long)inputJSON.get("y");
+        long width = (long)inputJSON.get("width");
+        long height = (long)inputJSON.get("height");
+        Circle newFigure = new Circle((int)x, (int)y, (int)width, (int)height); 
+        return newFigure;
     }
 }
