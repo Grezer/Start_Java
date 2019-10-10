@@ -18,6 +18,7 @@ import org.json.simple.parser.JSONParser;
 public class NewJFrame extends javax.swing.JFrame {
     
     Point start;
+    Point start2; // for trianle
     ArrayList<Figure> listOfFigures = new ArrayList<Figure>();
     
        
@@ -202,9 +203,10 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton5ActionPerformed
 
     private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
-        start = new Point(evt.getX(), evt.getY());          
+        if(buttonGroup1.getSelection().getActionCommand() != "Triangle")
+            start = new Point(evt.getX(), evt.getY());          
         jLabel5.setText("-");
-        jLabel6.setText("-");
+        jLabel6.setText("-");        
     }//GEN-LAST:event_jPanel1MousePressed
 
     private void jPanel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseReleased
@@ -219,7 +221,8 @@ public class NewJFrame extends javax.swing.JFrame {
                                 (int)Math.abs(start.getY() - evt.getY()));
                 jLabel5.setText("Perimetr: " + cir.getPerimeter());
                 jLabel6.setText("Area: " + cir.getArea());  
-                listOfFigures.add(cir);                
+                listOfFigures.add(cir);
+                start = null;                
             break;            
             case "Rectangle":
                 Rectangle rec = new Rectangle((int)Math.min(start.getX(), evt.getX()), 
@@ -229,6 +232,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 jLabel5.setText("Perimetr: " + rec.getPerimeter());
                 jLabel6.setText("Area: " + rec.getArea()); 
                 listOfFigures.add(rec);  
+                start = null;
             break;
             case "Rhombus":
                 Rhombus rmb = new Rhombus((int)Math.min(start.getX(), evt.getX()), 
@@ -237,7 +241,8 @@ public class NewJFrame extends javax.swing.JFrame {
                                 (int)Math.abs(start.getY() - evt.getY()));
                 jLabel5.setText("Perimetr: " + rmb.getPerimeter());
                 jLabel6.setText("Area: " + rmb.getArea()); 
-                listOfFigures.add(rmb);                  
+                listOfFigures.add(rmb);  
+                start = null;                
             break;
             case "Parallelogram":
                 Parallelogram par = new Parallelogram((int)Math.min(start.getX(), evt.getX()), 
@@ -246,17 +251,27 @@ public class NewJFrame extends javax.swing.JFrame {
                                 (int)Math.abs(start.getY() - evt.getY()));
                 jLabel5.setText("Perimetr: " + par.getPerimeter());
                 jLabel6.setText("Area: " + par.getArea());
+                start = null;
                 listOfFigures.add(par);                 
-            break;
+            break;            
             case "Triangle":
-                Triangle tri = new Triangle((int)Math.min(start.getX(), evt.getX()), 
-                                (int)Math.min(start.getY(), evt.getY()),
-                                (int)Math.abs(start.getX() - evt.getX()), 
-                                (int)Math.abs(start.getY() - evt.getY()));
-                jLabel5.setText("Perimetr: " + tri.getPerimeter());
-                jLabel6.setText("Area: " + tri.getArea());     
-                listOfFigures.add(tri);  
-            break;
+                if(start == null)
+                    start = new Point(evt.getX(), evt.getY());
+                if(start2 == null)
+                    start2 = new Point(evt.getX(), evt.getY());
+                else
+                {
+                    Triangle tri = new Triangle((int)start.getX(), (int)start.getY(), 
+                                                (int)start2.getX(), (int)start2.getY(),
+                                                evt.getX(), evt.getY());
+                    
+                    jLabel5.setText("Perimetr: " + tri.getPerimeter());
+                    jLabel6.setText("Area: " + tri.getArea());     
+                    listOfFigures.add(tri);  
+                    start = null;
+                    start2 = null;
+                }  
+            break;            
           default:           
         }          
         for (Figure i:listOfFigures) 
