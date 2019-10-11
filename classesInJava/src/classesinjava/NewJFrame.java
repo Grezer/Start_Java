@@ -203,8 +203,8 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton5ActionPerformed
 
     private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
-        if(buttonGroup1.getSelection().getActionCommand() != "Triangle")
-            start = new Point(evt.getX(), evt.getY());          
+        if(buttonGroup1.getSelection().getActionCommand() != "Triangle")   
+            start = new Point(evt.getX(), evt.getY());    
         jLabel5.setText("-");
         jLabel6.setText("-");        
     }//GEN-LAST:event_jPanel1MousePressed
@@ -257,7 +257,7 @@ public class NewJFrame extends javax.swing.JFrame {
             case "Triangle":
                 if(start == null)
                     start = new Point(evt.getX(), evt.getY());
-                if(start2 == null)
+                if(start2 == null && start != null)
                     start2 = new Point(evt.getX(), evt.getY());
                 else
                 {
@@ -323,15 +323,6 @@ public class NewJFrame extends javax.swing.JFrame {
                 jLabel5.setText("Perimetr: " + par.getPerimeter());
                 jLabel6.setText("Area: " + par.getArea());
             break;
-            case "Triangle":
-                Triangle tri = new Triangle((int)Math.min(start.getX(), evt.getX()), 
-                                (int)Math.min(start.getY(), evt.getY()),
-                                (int)Math.abs(start.getX() - evt.getX()), 
-                                (int)Math.abs(start.getY() - evt.getY()));
-                tri.draw(g);
-                jLabel5.setText("Perimetr: " + tri.getPerimeter());
-                jLabel6.setText("Area: " + tri.getArea()); 
-            break;
           default:           
         }  
     }//GEN-LAST:event_jPanel1MouseDragged
@@ -339,9 +330,26 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jPanel1MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseMoved
         //Супер костыль, что бы нормально рисовалось
         //Можешь закоментить и посмотреть чё будет
-        Graphics g = this.jPanel1.getGraphics(); 
+        Graphics g = this.jPanel1.getGraphics();         
         for (Figure i:listOfFigures) 
            i.draw(g); 
+        
+        String nowFigure  = buttonGroup1.getSelection().getActionCommand();
+        if(nowFigure == "Triangle" && start != null){   
+            jPanel1.removeAll();
+            jPanel1.repaint(); 
+            if(start2 == null)                                   
+                Triangle.drawLine(g, start, evt.getPoint());
+            else    {      
+            Triangle tri = new Triangle((int)start.getX(), (int)start.getY(), 
+                            (int)start2.getX(), (int)start2.getY(), 
+                            evt.getX(), evt.getY());
+            tri.draw(g);
+            jLabel5.setText("Perimetr: " + tri.getPerimeter());
+            jLabel6.setText("Area: " + tri.getArea()); 
+            }
+        }
+        
     }//GEN-LAST:event_jPanel1MouseMoved
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

@@ -44,6 +44,19 @@ public class Triangle extends Figure
         */
     }
     
+    public static void drawLine(Graphics g, Point p0, Point p1) {
+        int[] arrX = {p0.x, p1.x};
+        int[] arrY = {p0.y, p1.y};
+        g.setColor(Color.BLACK);
+        g.drawPolyline(arrX, arrY, 2); 
+        /*
+        int[] arrX = {x, width + x, (width/2) + x, x};
+        int[] arrY = {height + y, height + y, y, height + y};
+        g.setColor(Color.BLACK);
+        g.drawPolyline(arrX, arrY, 4);   
+        */
+    }
+    
     public double getPerimeter(){         
         return 1; //Math.sqrt(Math.pow(height, 2.0) + Math.pow(width / 2, 2.0)) * 2 + width ;
     }
