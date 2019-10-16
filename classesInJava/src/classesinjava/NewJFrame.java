@@ -73,6 +73,9 @@ public class NewJFrame extends javax.swing.JFrame {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jPanel1MouseReleased(evt);
             }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel1MouseClicked(evt);
+            }
         });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -211,8 +214,7 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jPanel1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseReleased
         Graphics g = this.jPanel1.getGraphics(); 
-        String nowFigure  = buttonGroup1.getSelection().getActionCommand();
-        
+        String nowFigure  = buttonGroup1.getSelection().getActionCommand();        
         switch(nowFigure) {
             case "Circle":
                 Circle cir = new Circle((int)Math.min(start.getX(), evt.getX()), 
@@ -253,25 +255,7 @@ public class NewJFrame extends javax.swing.JFrame {
                 jLabel6.setText("Area: " + par.getArea());
                 start = null;
                 listOfFigures.add(par);                 
-            break;            
-            case "Triangle":
-                if(start == null)
-                    start = new Point(evt.getX(), evt.getY());
-                if(start2 == null && start != null)
-                    start2 = new Point(evt.getX(), evt.getY());
-                else
-                {
-                    Triangle tri = new Triangle((int)start.getX(), (int)start.getY(), 
-                                                (int)start2.getX(), (int)start2.getY(),
-                                                evt.getX(), evt.getY());
-                    
-                    jLabel5.setText("Perimetr: " + tri.getPerimeter());
-                    jLabel6.setText("Area: " + tri.getArea());     
-                    listOfFigures.add(tri);  
-                    start = null;
-                    start2 = null;
-                }  
-            break;            
+            break;   
           default:           
         }          
         for (Figure i:listOfFigures) 
@@ -348,8 +332,7 @@ public class NewJFrame extends javax.swing.JFrame {
             jLabel5.setText("Perimetr: " + tri.getPerimeter());
             jLabel6.setText("Area: " + tri.getArea()); 
             }
-        }
-        
+        }       
     }//GEN-LAST:event_jPanel1MouseMoved
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -395,6 +378,26 @@ public class NewJFrame extends javax.swing.JFrame {
                 i.draw(this.jPanel1.getGraphics());
         }       
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
+        // TODO add your handling code here: чисто для треугольника
+        if(start == null)
+            start = new Point(evt.getX(), evt.getY());
+        if(start2 == null && start != null)
+            start2 = new Point(evt.getX(), evt.getY());
+        else
+        {
+            Triangle tri = new Triangle((int)start.getX(), (int)start.getY(), 
+                                        (int)start2.getX(), (int)start2.getY(),
+                                        evt.getX(), evt.getY());
+
+            jLabel5.setText("Perimetr: " + tri.getPerimeter());
+            jLabel6.setText("Area: " + tri.getArea());     
+            listOfFigures.add(tri);  
+            start = null;   
+            start2 = null;
+        }  
+    }//GEN-LAST:event_jPanel1MouseClicked
    
     /**
      * @param args the command line arguments
