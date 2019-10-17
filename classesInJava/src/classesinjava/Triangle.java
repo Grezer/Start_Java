@@ -39,12 +39,16 @@ public class Triangle extends Figure
         g.drawPolyline(arrX, arrY, 2); 
     }
     
-    public double getPerimeter(){         
-        return 1; //Math.sqrt(Math.pow(height, 2.0) + Math.pow(width / 2, 2.0)) * 2 + width ;
+    public double getPerimeter(){   
+        double L1 = Math.sqrt(Math.pow((x2 - x), 2) + Math.pow((y2 - y), 2));
+        double L2 = Math.sqrt(Math.pow((x3 - x2), 2) + Math.pow((y3 - y2), 2));
+        double L3 = Math.sqrt(Math.pow((x - x3), 2) + Math.pow((y - y3), 2));
+        return L1 + L2 + L3;
     }
      
-    public double getArea(){         
-        return 1; //width / 2 + height;
+    public double getArea(){       
+        double area = Math.abs((x*(y2-y3)+x2*(y3-y)+x3*(y-y2))/2);
+        return area;
     }
     
     public JSONObject toJSON(){
