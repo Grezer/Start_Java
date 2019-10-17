@@ -19,7 +19,7 @@ public class Parallelogram extends Figure
         super(x,y);
         this.width = width;
         this.height = height;
-        this.type = this.getClass().getName().split("java.")[1];
+        this.type = this.getClass().getSimpleName();
     }
     public void draw(Graphics g) {
         int[] arrX = {x, (int)(x + width* 0.8), (x + width), (int)(x + width* 0.2), x};

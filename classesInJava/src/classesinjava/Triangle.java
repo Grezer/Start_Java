@@ -14,13 +14,7 @@ import org.json.simple.JSONObject;
 
 public class Triangle extends Figure
 {
-    int x2, y2, x3, y3;
-    Triangle(int x, int y, int width, int height){
-        super(x,y);
-        this.width = width;
-        this.height = height;
-        this.type = this.getClass().getName().split("java.")[1];
-    }
+    int x2, y2, x3, y3;   
 
     Triangle(int x, int y, int x2, int y2, int x3, int y3){
         super(x,y);        
@@ -28,7 +22,7 @@ public class Triangle extends Figure
         this.y2 = y2;
         this.x3 = x3;
         this.y3 = y3;
-        this.type = this.getClass().getName().split("java.")[1];
+        this.type = this.getClass().getSimpleName();
     }
     
     public void draw(Graphics g) {
@@ -36,12 +30,6 @@ public class Triangle extends Figure
         int[] arrY = {y, y2, y3, y};
         g.setColor(Color.BLACK);
         g.drawPolyline(arrX, arrY, 4); 
-        /*
-        int[] arrX = {x, width + x, (width/2) + x, x};
-        int[] arrY = {height + y, height + y, y, height + y};
-        g.setColor(Color.BLACK);
-        g.drawPolyline(arrX, arrY, 4);   
-        */
     }
     
     public static void drawLine(Graphics g, Point p0, Point p1) {
@@ -49,12 +37,6 @@ public class Triangle extends Figure
         int[] arrY = {p0.y, p1.y};
         g.setColor(Color.BLACK);
         g.drawPolyline(arrX, arrY, 2); 
-        /*
-        int[] arrX = {x, width + x, (width/2) + x, x};
-        int[] arrY = {height + y, height + y, y, height + y};
-        g.setColor(Color.BLACK);
-        g.drawPolyline(arrX, arrY, 4);   
-        */
     }
     
     public double getPerimeter(){         
@@ -73,7 +55,6 @@ public class Triangle extends Figure
         objectFigure.put("y2", this.y2);
         objectFigure.put("x3", this.x3);
         objectFigure.put("y3", this.y3);
-        //objectFigure.put("type", inputFigure.getClass().getName().split("java.")[1]);
         return objectFigure;   
     }
     

@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.io.*;
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
+import java.sql.*;
 /**
  *
  * @author Grezer
@@ -18,20 +19,61 @@ import org.json.simple.parser.JSONParser;
 public class NewJFrame extends javax.swing.JFrame {
     
     Point start;
+    Point start1; // for trianle
     Point start2; // for trianle
     ArrayList<Figure> listOfFigures = new ArrayList<Figure>();
+    Connection Con;
     
        
     /**
      * Creates new form NewJFrame
      */
+    
+    
+    public void getCon() {
+        try{
+             Class.forName("org.sqlite.JDBC");
+             Con = DriverManager.getConnection (
+             "jdbc:sqlite:figures.db");
+             System.out.println("Connected");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void close() {
+        try{
+            Con.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public String[] getPictures(){
+        getCon();
+        String query  = "SELECT name "
+                      + "FROM Pictures";
+    }
+    
+    public void savePicture(String name, String jsonFiures){
+        try{
+            getCon();
+            String query  = "INSERT INTO Pictures (name, jsonFiures) "
+                          + "VALUES ('" + name + "', '" + jsonFiures + "')";
+            Statement statement = Con.createStatement();
+            statement.executeUpdate(query);
+        } catch (Exception e) {
+            System.out.println("Here "  + e.getMessage());
+        }
+    }
+    
     public NewJFrame() {
         initComponents();
         jRadioButton1.setActionCommand("Circle");
         jRadioButton2.setActionCommand("Rectangle");
         jRadioButton3.setActionCommand("Rhombus");
         jRadioButton4.setActionCommand("Parallelogram");
-        jRadioButton5.setActionCommand("Triangle");
+        jRadioButton5.setActionCommand("Triangle");         
     }
 
     /**
@@ -55,6 +97,10 @@ public class NewJFrame extends javax.swing.JFrame {
         jRadioButton5 = new javax.swing.JRadioButton();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        jButton4 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -135,13 +181,27 @@ public class NewJFrame extends javax.swing.JFrame {
             }
         });
 
+        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(jList1);
+
+        jButton4.setText("Save in DB");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,17 +214,22 @@ public class NewJFrame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jRadioButton5))
                             .addComponent(jRadioButton4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 56, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(100, 100, 100)
+                        .addGap(27, 27, 27)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE))))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jTextField1))
+                .addGap(17, 17, 17))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,16 +242,20 @@ public class NewJFrame extends javax.swing.JFrame {
                             .addComponent(jRadioButton1)
                             .addComponent(jRadioButton3)
                             .addComponent(jRadioButton5)
-                            .addComponent(jButton1))
+                            .addComponent(jButton1)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jRadioButton2)
                             .addComponent(jRadioButton4)
                             .addComponent(jLabel6)
-                            .addComponent(jButton3)))
+                            .addComponent(jButton3)
+                            .addComponent(jButton4)))
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
 
@@ -206,8 +275,7 @@ public class NewJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton5ActionPerformed
 
     private void jPanel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MousePressed
-        if(buttonGroup1.getSelection().getActionCommand() != "Triangle")   
-            start = new Point(evt.getX(), evt.getY());    
+        start = new Point(evt.getX(), evt.getY());    
         jLabel5.setText("-");
         jLabel6.setText("-");        
     }//GEN-LAST:event_jPanel1MousePressed
@@ -314,25 +382,21 @@ public class NewJFrame extends javax.swing.JFrame {
     private void jPanel1MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseMoved
         //Супер костыль, что бы нормально рисовалось
         //Можешь закоментить и посмотреть чё будет
-        Graphics g = this.jPanel1.getGraphics();         
-        for (Figure i:listOfFigures) 
-           i.draw(g); 
-        
-        String nowFigure  = buttonGroup1.getSelection().getActionCommand();
-        if(nowFigure == "Triangle" && start != null){   
+        Graphics g = this.jPanel1.getGraphics();      
+        if(start2 != null) {
             jPanel1.removeAll();
-            jPanel1.repaint(); 
-            if(start2 == null)                                   
-                Triangle.drawLine(g, start, evt.getPoint());
-            else    {      
-            Triangle tri = new Triangle((int)start.getX(), (int)start.getY(), 
+            jPanel1.repaint();
+            Triangle tri = new Triangle((int)start1.getX(), (int)start1.getY(), 
                             (int)start2.getX(), (int)start2.getY(), 
                             evt.getX(), evt.getY());
             tri.draw(g);
-            jLabel5.setText("Perimetr: " + tri.getPerimeter());
-            jLabel6.setText("Area: " + tri.getArea()); 
-            }
-        }       
+        } else if (start1 != null){
+            jPanel1.removeAll();
+            jPanel1.repaint();
+            Triangle.drawLine(g, start1, evt.getPoint());
+        }        
+        for (Figure i:listOfFigures) 
+           i.draw(g);  
     }//GEN-LAST:event_jPanel1MouseMoved
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -381,23 +445,32 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
         // TODO add your handling code here: чисто для треугольника
-        if(start == null)
-            start = new Point(evt.getX(), evt.getY());
-        if(start2 == null && start != null)
-            start2 = new Point(evt.getX(), evt.getY());
+        if(start1 == null)
+            start1 = new Point(evt.getPoint());
+        else if(start2 == null && start1 != null)
+            start2 = new Point(evt.getPoint());
         else
         {
-            Triangle tri = new Triangle((int)start.getX(), (int)start.getY(), 
+            Triangle tri = new Triangle((int)start1.getX(), (int)start1.getY(), 
                                         (int)start2.getX(), (int)start2.getY(),
                                         evt.getX(), evt.getY());
-
             jLabel5.setText("Perimetr: " + tri.getPerimeter());
             jLabel6.setText("Area: " + tri.getArea());     
-            listOfFigures.add(tri);  
-            start = null;   
-            start2 = null;
+            listOfFigures.add(tri); 
+            start1 = start2 = null;
         }  
     }//GEN-LAST:event_jPanel1MouseClicked
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        String name = jTextField1.getText();
+        JSONArray figureJSON = new JSONArray();
+        for (Figure i:listOfFigures)    
+            figureJSON.add(FigureCreator.toJSON(i));
+        String jsonFiures = figureJSON.toString();
+        savePicture(name, jsonFiures);
+        // jTextField1 (name)
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
    
     /**
      * @param args the command line arguments
@@ -439,13 +512,17 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JRadioButton jRadioButton5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

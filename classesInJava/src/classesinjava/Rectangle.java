@@ -18,7 +18,7 @@ public class Rectangle extends Figure
         super(x,y);
         this.width = width;
         this.height = height;
-        this.type = this.getClass().getName().split("java.")[1];
+        this.type = this.getClass().getSimpleName();
     }
     public void draw(Graphics g) {
         g.drawRect(x, y, width, height);
