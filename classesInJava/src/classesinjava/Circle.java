@@ -41,7 +41,6 @@ public class Circle extends Figure
         objectFigure.put("y", this.y);
         objectFigure.put("height", this.height);
         objectFigure.put("width", this.width);
-        //objectFigure.put("type", this.getClass().getName().split("java.")[1]);
         return objectFigure;   
     }
     

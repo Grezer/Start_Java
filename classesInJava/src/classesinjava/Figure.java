@@ -29,6 +29,5 @@ abstract class Figure{
     public abstract double getPerimeter();    
     public abstract double getArea();    
     public abstract void draw(Graphics g);
-    public abstract JSONObject toJSON();  
-    //public abstract Figure fromJSON(JSONObject obj); 
+    public abstract JSONObject toJSON();    
 }
