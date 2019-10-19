@@ -1,3 +1,4 @@
+
 # Рисовалка для фигур с возможностью сохранения и загрузки в формате JSON
 
 ---
@@ -5,7 +6,9 @@
 ## Где что лежит
 В файле [Figure](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Figure.java) описан абстрактный класс для фигурок  
 От него наследуются 5 классов: [Circle](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Circle.java), [Rectangle](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Rectangle.java), [Rhombus](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Rhombus.java), [Parallelogram](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Parallelogram.java) и [Triangle](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/Triangle.java)   
-В [FileTypeFilter](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/FileTypeFilter.java) описан фильтр для форматов файла (нужен для окна сохранения файла)  
+В [FileTypeFilter](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/FileTypeFilter.java) описан фильтр для форматов файла (нужен для окна сохранения файла)    
+В [FigureCreator](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/FigureCreator.java) два метода для конвертации фигуры в формат JSON и обратно    
+В [sqLite](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/sqLite.java) описаны методы для взаимодействия с БД
 Ну и в [NewJFrame](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/NewJFrame.java) вся логика
 
 ---
@@ -23,48 +26,70 @@ abstract class Figure{
         this.x=x;
         this.y=y;
     }
+    
+    public String getType() {
+        return this.getClass().getName();
+    }
+    
     public abstract double getPerimeter();    
     public abstract double getArea();    
     public abstract void draw(Graphics g);
+    public abstract JSONObject toJSON(); 
 }
 ```
-В этом класе также объявлены методы рисования и получения периметра и площади: ```getPerimeter(); getArea(); draw(Graphics g);``` 
+В этом классе также объявлены методы рисования и получения периметра и площади: ```getPerimeter(); getArea(); draw(Graphics g);``` 
+Так же описаны методы получения типа фигуры ```getType();``` и конвертации в JSON объект ```toJSON();``` 
 
 Для каждого типа фигур описан свой класс:
 ```java
-public class Triangle extends Figure
+public class Circle extends Figure
 {
-    Triangle(int x, int y, int width, int height){
+    Circle(int x, int y, int width, int height){
         super(x,y);
         this.width = width;
         this.height = height;
-        this.type = "Triangle";
+        this.type = this.getClass().getSimpleName();        
     }
     
     public void draw(Graphics g) {
-        int[] arrX = {x, width + x, (width/2) + x, x};
-        int[] arrY = {height + y, height + y, y, height + y};
-        g.setColor(Color.BLACK);
-        g.drawPolyline(arrX, arrY, 4);        
+        g.drawOval(x, y, width, height);
     }
     
-    public double getPerimeter(){         
-        return Math.sqrt(Math.pow(height, 2.0) + Math.pow(width / 2, 2.0)) * 2 + width ;
+    public double getPerimeter(){  
+        return 2 * Math.PI * Math.sqrt((width ^ 2 + height ^ 2)/8);
     }
      
     public double getArea(){         
-        return width / 2 + height;
+        return Math.PI * (width / 2 + height / 2);
+    }
+    
+    public JSONObject toJSON(){
+        JSONObject objectFigure = new JSONObject();
+        objectFigure.put("x", this.x);
+        objectFigure.put("y", this.y);
+        objectFigure.put("height", this.height);
+        objectFigure.put("width", this.width);
+        return objectFigure;   
+    }
+    
+    public static Circle fromJSON(JSONObject inputJSON){
+        long x = (long)inputJSON.get("x");
+        long y = (long)inputJSON.get("y");
+        long width = (long)inputJSON.get("width");
+        long height = (long)inputJSON.get("height");
+        Circle newFigure = new Circle((int)x, (int)y, (int)width, (int)height); 
+        return newFigure;
     }
 }
 ```
 ---
 
 ## События 
-Для рисования используем 5 JRadioButton объединённых в группу кнопок и три события на jPanel (mouseDragged, mousePressed, mouseReleased).
+Для рисования используем 5 JRadioButton объединённых в группу и три события на jPanel (mouseDragged, mousePressed, mouseReleased). А для треугольника ещё MouseClicked.
 Все фигуры хранятся в глобальном списке ```ArrayList<Figure> listOfFigures = new ArrayList<Figure>();```
 
 ### mousePressed
-Записываем координаты события в глобальную переменную ```Point start;``` и очищем лейблы для периметра и площади.
+Записываем координаты события в глобальную переменную ```Point start;``` и очищаем лейблы для периметра и площади.
 ### mouseDragged
 Получаем тип фигуры  ```String nowFigure  = buttonGroup1.getSelection().getActionCommand();``` 
 Затем очищаем jPanel и рисуем все фигуры заново:
@@ -97,6 +122,56 @@ listOfFigures.add(tri);
 ```
 И отрисовка всех фигур происходит в конце метода
 
+
+
+### mouseMoved
+В данном событии мы обрабатываем ситуацию возникающую при отрисовке треугольника (ведь он у нас особенный). Суть в том, что мы проверяем "а есть ли что то в стартовых точках start1 и start2?". 
+
+Если в start2 ничего нет смотрим start1, а если есть, то рисуем треугольник от start1, start2 и координат курсора.
+
+Если в start1 что то есть, а в start2 - ничего, тогда рисуем линию от start1 до курсора.
+
+В конце рисуем все фигуры
+
+```java
+Graphics g = this.jPanel1.getGraphics();      
+if(start2 != null) {
+    jPanel1.removeAll();
+    jPanel1.repaint();
+    Triangle tri = new Triangle((int)start1.getX(), (int)start1.getY(), 
+                    (int)start2.getX(), (int)start2.getY(), 
+                    evt.getX(), evt.getY());
+    tri.draw(g);
+} else if (start1 != null){
+    jPanel1.removeAll();
+    jPanel1.repaint();
+    Triangle.drawLine(g, start1, evt.getPoint());
+}        
+for (Figure i:listOfFigures) 
+   i.draw(g);  
+```
+### mouseClicked
+В данном событии мы обрабатываем ситуацию возникающую при клике мыши. 
+Если в start1 ничего нет - записываем туда координаты клика.
+Если в start2 ничего нет, но что то есть в start1 - записываем в start2 координаты клика.
+Если и в start1 и в start2 что то есть - создаём новый треугольник по координатам из start1, start2 и курсора.
+Затем обнуляем start1 и start2.
+```java
+if(start1 == null)
+    start1 = new Point(evt.getPoint());
+else if(start2 == null && start1 != null)
+    start2 = new Point(evt.getPoint());
+else
+{
+    Triangle tri = new Triangle((int)start1.getX(), (int)start1.getY(), 
+                                (int)start2.getX(), (int)start2.getY(),
+                                evt.getX(), evt.getY());
+    jLabel5.setText("Perimetr: " + tri.getPerimeter());
+    jLabel6.setText("Area: " + tri.getArea());     
+    listOfFigures.add(tri); 
+    start1 = start2 = null;
+}  
+```
 ---
 
 ## Сохранение и загрузка JSON
@@ -110,22 +185,12 @@ listOfFigures.add(tri);
 
 
 ### Сохранение
-Создаём объект JSON ```objectFigure``` и для каждой фигуры формируем массив ```figureJSON```  
-Заполняем его свойствами фигуры после чего пихаем массив в наш объект и даём ему имя ```objectFigure.put("Figure " + iterator + ": ", figureJSON);```  
-Затем вызываем ```JFileChooser``` и пишем наш объект в созданный файлик  
+Создаём массив JSON ```figureJSON ``` и для каждой фигуры в listOfFigures вызываем метод конвертирующий её в JSONObject.
+Затем вызываем ```JFileChooser``` и пишем наш массив в созданный файлик.
 ```java
-JSONObject objectFigure = new JSONObject();
-int iterator = 0;
-for (Figure i:listOfFigures) {
-    JSONArray figureJSON = new JSONArray();
-    figureJSON.add("x: " + i.x);
-    figureJSON.add("y: " + i.y);
-    figureJSON.add("height: " + i.height);
-    figureJSON.add("width: " + i.width);
-    figureJSON.add("type: " + i.type);      
-    objectFigure.put("Figure " + iterator + ": ", figureJSON);
-    iterator++;
-}           
+JSONArray figureJSON = new JSONArray();
+for (Figure i:listOfFigures)    
+    figureJSON.add(FigureCreator.toJSON(i));         
 JFileChooser fileChooser = new  JFileChooser();
 fileChooser.setDialogTitle("Save file");    
 fileChooser.setFileFilter(new FileTypeFilter(".json", "JSON format"));
@@ -136,134 +201,163 @@ if (result == JFileChooser.APPROVE_OPTION){
         if(!file.exists()) 
             file.createNewFile();
         PrintWriter pw = new PrintWriter(file);
-        pw.print(objectFigure.toJSONString());
+        pw.print(figureJSON.toJSONString());
         pw.close();
     } catch(Exception e) { }  
 }   
 ```
-Тут важный момент в 15 строчке   
-Дело в том, что класса ```FileTypeFilter();``` у нас не существует  
-Поэтому его надо написать :)  
-```java
-package classesinjava;
-import java.io.File;
-import javax.swing.filechooser.*;
-
-public class FileTypeFilter extends FileFilter{
-    private final String extension;
-    private final String description;
-    
-    public FileTypeFilter(String extension, String description){
-        this.extension = extension;
-        this.description = description;
-    }
-    
-    @Override
-    public boolean accept(File file){
-        if (file.isDirectory())
-            return true;
-        return file.getName().endsWith(extension);
-    }
-    
-    @Override
-    public String getDescription(){
-        return description + String.format(" (*%s)", extension);
-    }
-}
-```
+Тут важный момент в 6 строчке   
+Дело в том, что класса ```FileTypeFilter();``` в Java не существует  
+Поэтому его надо [написать](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/FileTypeFilter.java) :)  
 
 В итоге получается файлик в формате JSON
 ```
-{
-    "Figure 2: ": [
-        "x: 93",
-        "y: 102",
-        "height: 90",
-        "width: 99",
-        "type: Rectangle"
-    ],
-    "Figure 1: ": [
-        "x: 211",
-        "y: 233",
-        "height: 71",
-        "width: 326",
-        "type: Parallelogram"
-    ],
-    "Figure 0: ": [
-        "x: 146",
-        "y: 106",
-        "height: 139",
-        "width: 215",
-        "type: Circle"
-    ]
-}
+[
+    {
+        "x": 119,
+        "width": 200,
+        "y": 107,
+        "type": "Circle",
+        "height": 64
+    },
+    {
+        "x": 216,
+        "width": 147,
+        "y": 94,
+        "type": "Rhombus",
+        "height": 155
+    },
+    {
+        "x": 401,
+        "y": 112,
+        "y2": 211,
+        "x2": 273,
+        "y3": 254,
+        "x3": 429,
+        "type": "Triangle"
+    }
+]
 ```
 
 ### Загрузка
-Призываем великий и ужасный ```JFileChooser``` и если диалог удался ```if (ret == JFileChooser.APPROVE_OPTION)``` идём читать файлик и объявляем парсер
+Призываем великий и ужасный ```JFileChooser``` и если диалог удался ```if (ret == JFileChooser.APPROVE_OPTION)``` идём удалять всё из listOfFigures и читать файлик.  
+Далее объявляем парсер ```JSONParser parser = new JSONParser();``` и сохраняем фигурки в ```listOfFigures``` обернув всё в ```try catch```
 ```java
-File file = fileChooser.getSelectedFile();  
-JSONParser parser = new JSONParser();
+JFileChooser fileChooser = new JFileChooser();
+int ret = fileChooser.showDialog(null, "Open File");                
+if (ret == JFileChooser.APPROVE_OPTION) {
+    listOfFigures.removeAll(listOfFigures);
+    File file = fileChooser.getSelectedFile();  
+    JSONParser parser = new JSONParser();
+    try (FileReader reader = new FileReader(file))
+    {
+        Object obj = parser.parse(reader);
+        JSONArray rootArray = (JSONArray) obj;
+        Iterator figures = rootArray.iterator();
+        while (figures.hasNext()) {                    
+            JSONObject test = (JSONObject) figures.next();
+            listOfFigures.add(FigureCreator.fromJSON(test));
+        }
+    } catch (Exception e) { System.out.println(e.getMessage()); }   
+    jPanel1.removeAll();
+    jPanel1.repaint(); 
+    for (Figure i:listOfFigures) 
+        i.draw(this.jPanel1.getGraphics());
+}
 ```
-Затем парсим и сохраняем фигурки в ```listOfFigures``` обернув всё в ```try catch```
+В конце чистим панельку и рисуем все фигурки из списка
+
+---
+## Сохранение и загрузка в sqLite
+### Установка и создание базы
+Для того что бы sqLite заработал вам нужны только эти три [файла](https://github.com/Grezer/Start_Java/tree/master/sql)  
+Я закинул их прямо в папку с проектом, и вам советую  
+Далее запускаем sqlite3.exe  
+Первым делом открываем базу командой .open (если базы нет, то она создаётся) и создаём таблички  
+.headers on включает отображение заголовков, а .mode column или line задаёт стиль отображения ответов  
+![sql.png](https://github.com/Grezer/Start_Java/blob/master/sql.png)
+Для обращения к базе из java нужен [драйвер](https://github.com/Grezer/Start_Java/tree/master/classesInJava/src/classesinjava/SQLLite)  
+Он ставится так же как и JSON-Simple
+
+### Методы
+Метод создающий соединение с файлом БД и передающий его в глобальную переменную ```Connection Con;```
 ```java
-try (FileReader reader = new FileReader(file))
-{
-    Object obj = parser.parse(reader);
-    JSONObject rootElement = (JSONObject) obj;
-    for (int numFigure = 0; numFigure < rootElement.size(); numFigure++) {
-        int newX = 0;
-        int newY = 0;
-        int newWidth = 0;
-        int newHight = 0;
-        String newType = "";   
-    JSONArray figureJSON = (JSONArray) rootElement.get("Figure " + numFigure + ": ");  
-    Iterator properties = figureJSON.iterator();
-    while (properties.hasNext()) {
-        String test = (String) properties.next();
-        if(test.charAt(0) == 'x') 
-            newX = Integer.parseInt(test.split(" ")[1]); 
-        if(test.charAt(0) == 'y') 
-            newY = Integer.parseInt(test.split(" ")[1]);
-        if(test.charAt(0) == 'h') 
-            newHight = Integer.parseInt(test.split(" ")[1]);
-        if(test.charAt(0) == 'w') 
-            newWidth = Integer.parseInt(test.split(" ")[1]);
-        if(test.charAt(0) == 't') 
-            newType = test.split(" ")[1];                                                   
+public void getCon() {
+	try{
+	     Class.forName("org.sqlite.JDBC");
+	     Con = DriverManager.getConnection (
+	     "jdbc:sqlite:C:\\Users\\pc\\Desktop\\Учёба\\Java\\classesInJava\\src\\classesinjava\\figures.db");
+	     System.out.println("Connected");
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
+}
+```
+
+Метод закрывающий соединение
+```java
+public void close() {
+	try{
+	    Con.close();
+	} catch (Exception e) {
+	    System.out.println(e.getMessage());
+	}
+}
+```
+Метод получающий массив названий картинок
+```java
+public ArrayList<String> getPicturesName() {
+    try{
+        ArrayList<String> pictureNames = new ArrayList<String>();
+        getCon();
+        Statement statement = Con.createStatement();
+        String query  = "SELECT name "
+                      + "FROM Pictures";            
+        ResultSet result = statement.executeQuery(query);
+        while(result.next()){
+            pictureNames.add(result.getString("name"));
+        }
+        close();
+        return pictureNames;         
+    } catch (Exception e){
+        System.out.println("Here "  + e.getMessage());
+        return null;
+    }        
+}
+```
+Получение картинки
+```java
+public String getPicture(String name) {
+public String getPicture(String name) {
+    try{
+        getCon();
+        String Picture;
+        Statement statement = Con.createStatement();
+        String query  = "SELECT jsonFigures "
+                      + "FROM Pictures WHERE name = '" + name + "'";            
+        ResultSet result = statement.executeQuery(query);  
+        Picture = result.getString("jsonFigures");
+        close();
+        return Picture;         
+    } catch (Exception e){
+        System.out.println(e.getMessage());
+        return null;
+    }        
+}
+```
+Метод сохраняющий картинки в бд
+```java
+public void savePicture(String name, String jsonFigures){
+    try{            
+        getCon();
+        String query  = "INSERT INTO Pictures (name, jsonFigures) "
+                      + "VALUES ('" + name + "', '" + jsonFigures + "')";
+        Statement statement = Con.createStatement();
+        statement.executeUpdate(query);
+        close();
+    } catch (Exception e) {
+        System.out.println(e.getMessage());
     }
-    // add to list
-    switch(newType) {
-        case "Circle":
-            Circle cir = new Circle(newX, newY, newWidth, newHight); 
-            listOfFigures.add(cir);
-        break;            
-        case "Rectangle":
-            Rectangle rec = new Rectangle(newX, newY, newWidth, newHight);
-            listOfFigures.add(rec);
-        break;
-        case "Rhombus":
-            Rhombus rmb = new Rhombus(newX, newY, newWidth, newHight);
-            listOfFigures.add(rmb);
-        break;
-        case "Parallelogram":
-            Parallelogram par = new Parallelogram(newX, newY, newWidth, newHight);
-            listOfFigures.add(par);
-        break;
-        case "Triangle":
-            Triangle tri = new Triangle(newX, newY, newWidth, newHight);
-            listOfFigures.add(tri);
-        break;
-      default:           
-    }
-  }                
-} catch (Exception e) { System.out.println(e.getMessage()); }
+}
 ```
-Далее чистим панельку и рисуем все фигурки из списка
-```java
-jPanel1.removeAll();
-jPanel1.repaint(); 
-for (Figure i:listOfFigures) 
-    i.draw(this.jPanel1.getGraphics());
-```
-Глянуть как это всё работает можно [тут](https://www.youtube.com/watch?v=GoMTOFjzfdg)
+Обращение к этим методам смотрите [тут](https://github.com/Grezer/Start_Java/blob/master/classesInJava/src/classesinjava/NewJFrame.java)
